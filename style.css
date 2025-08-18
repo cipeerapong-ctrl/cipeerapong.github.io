@@ -1,0 +1,182 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Body */
+body {
+  background: #0b1a30; /* navy */
+  color: #ddd;
+  line-height: 1.6;
+}
+
+/* Navbar */
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 120px;
+}
+
+.logo-text h1 {
+  font-size: 18px;
+  color: #d4af37; /* gold */
+  letter-spacing: 2px;
+}
+
+.logo-text p {
+  font-size: 12px;
+  color: #aaa;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #ccc;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #d4af37;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 3px;
+}
+
+/* Hero */
+.hero {
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 26, 48, 0.75);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+}
+
+.hero-content h2 {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #d4af37;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 28px;
+  background: #d4af37; /* gold */
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #f5d06f;
+}
+
+/* Sections */
+section {
+  padding: 80px 15%;
+  text-align: center;
+}
+
+.about p {
+  max-width: 700px;
+  margin: 20px auto;
+  color: #ccc;
+}
+
+/* Services */
+.services .service-list {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.services .service {
+  background: #12294b;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  width: 30%;
+}
+
+.services .service h3 {
+  color: #d4af37;
+  margin-bottom: 15px;
+}
+
+/* Performance */
+.why-us .stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.why-us .stats div h3 {
+  font-size: 36px;
+  color: #d4af37;
+}
+
+/* Contact */
+.contact p {
+  margin: 20px 0;
+  font-size: 18px;
+  color: #eee;
+}
+
+/* Footer */
+footer {
+  background: #081423;
+  color: #888;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+
+
