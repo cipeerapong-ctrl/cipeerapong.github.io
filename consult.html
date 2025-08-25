@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ปรึกษาเรา - SterlingPoint</title>
+  <link rel="stylesheet" href="consult.css">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="sterling.png" alt="SterlingPoint Logo">
+      <div class="logo-text">
+        <h1>STERLINGPOINT</h1>
+        <p>INVESTMENT MANAGEMENT</p>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="services.html">บริการ</a></li>
+        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+        <li><a href="consult.html" class="active">ปรึกษาเรา</a></li>
+        <li><a href="contact.html">ติดต่อเรา</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h2>ปรึกษาเรา</h2>
+      <p>ทีมงานมืออาชีพของเราพร้อมให้คำแนะนำการลงทุนที่เหมาะสมกับคุณ</p>
+    </div>
+  </section>
+
+  <section class="consult-form">
+    <h2>กรอกข้อมูลเพื่อรับคำปรึกษา</h2>
+    <form action="submit_form.php" method="POST">
+      <input type="text" name="name" placeholder="ชื่อ-นามสกุล" required>
+      <input type="email" name="email" placeholder="อีเมล" required>
+      <input type="tel" name="phone" placeholder="เบอร์โทรศัพท์" required>
+      <textarea name="message" placeholder="ข้อความหรือคำถาม" rows="5" required></textarea>
+      <button type="submit" class="btn">ส่งคำขอปรึกษา</button>
+    </form>
+  </section>
+
+  <section class="contact-info">
+    <h2>ข้อมูลติดต่อเพิ่มเติม</h2>
+    <p>คุณสามารถติดต่อเราได้ที่:</p>
+    <ul>
+      <li>อีเมล: <a href="mailto:sterlingpoint@gmail.com">sterlingpoint@gmail.com</a></li>
+      <li>โทรศัพท์: <a href="tel:+6621234567">085-515-6896</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    &copy; 2025 SterlingPoint Investment Management. All rights reserved.
+  </footer>
+</body>
+</html>

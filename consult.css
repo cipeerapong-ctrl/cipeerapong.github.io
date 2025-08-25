@@ -1,0 +1,152 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and general styles */
+body {
+    font-family: 'Sarabun', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+}
+
+/* Header and navigation */
+header {
+    background-color: #004d40;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Main content */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Intro section */
+.intro {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.intro h1 {
+    font-size: 2.5rem;
+    color: #004d40;
+}
+
+.intro p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Form section */
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h2 {
+    font-size: 1.8rem;
+    color: #004d40;
+    margin-bottom: 10px;
+}
+
+.form-section form {
+    display: grid;
+    gap: 15px;
+}
+
+.form-section label {
+    font-size: 1rem;
+    color: #333;
+}
+
+.form-section input,
+.form-section textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-section button {
+    background-color: #004d40;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.form-section button:hover {
+    background-color: #00796b;
+}
+
+/* Contact info section */
+.contact-info {
+    margin-top: 30px;
+}
+
+.contact-info h2 {
+    font-size: 1.8rem;
+    color: #004d40;
+    margin-bottom: 10px;
+}
+
+.contact-info p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.contact-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info ul li {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.contact-info ul li a {
+    color: #004d40;
+    text-decoration: none;
+}
+
+.contact-info ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1rem;
+    color: #777;
+}
