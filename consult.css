@@ -1,152 +1,190 @@
-/* Reset default styles */
+/* Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Body and general styles */
+/* Body */
 body {
-    font-family: 'Sarabun', sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
-    padding: 20px;
+  background: #0b1a30; /* navy */
+  color: #ddd;
+  line-height: 1.6;
 }
 
-/* Header and navigation */
+/* Header ใช้เหมือนเว็บหลัก */
 header {
-    background-color: #004d40;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 120px;
+}
+
+.logo-text h1 {
+  font-size: 18px;
+  color: #d4af37; /* gold */
+  letter-spacing: 2px;
+}
+
+.logo-text p {
+  font-size: 12px;
+  color: #aaa;
 }
 
 nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin-right: 20px;
+  list-style: none;
+  display: flex;
+  gap: 25px;
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+  text-decoration: none;
+  color: #ccc;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
-/* Main content */
-main {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+nav ul li a:hover,
+nav ul li a.active {
+  color: #d4af37;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 3px;
 }
 
-/* Intro section */
-.intro {
-    text-align: center;
-    margin-bottom: 30px;
+/* Hero Section */
+.hero {
+  height: 60vh;
+  background: url('https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  margin-top: 80px;
 }
 
-.intro h1 {
-    font-size: 2.5rem;
-    color: #004d40;
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 26, 48, 0.75);
 }
 
-.intro p {
-    font-size: 1.2rem;
-    color: #555;
+.hero-content {
+  position: relative;
+  z-index: 2;
 }
 
-/* Form section */
-.form-section {
-    margin-bottom: 30px;
+.hero-content h2 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #d4af37;
 }
 
-.form-section h2 {
-    font-size: 1.8rem;
-    color: #004d40;
-    margin-bottom: 10px;
+.hero-content p {
+  color: #fff;
+  font-size: 20px;
+  margin-top: 10px;
 }
 
-.form-section form {
-    display: grid;
-    gap: 15px;
+/* Consult Form */
+.consult-form {
+  padding: 60px 20%;
+  text-align: center;
 }
 
-.form-section label {
-    font-size: 1rem;
-    color: #333;
+.consult-form h2 {
+  font-size: 32px;
+  color: #d4af37;
+  margin-bottom: 30px;
 }
 
-.form-section input,
-.form-section textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
+.consult-form form {
+  display: grid;
+  gap: 20px;
 }
 
-.form-section button {
-    background-color: #004d40;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.2rem;
-    cursor: pointer;
+.consult-form input,
+.consult-form textarea {
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  width: 100%;
+  font-size: 16px;
 }
 
-.form-section button:hover {
-    background-color: #00796b;
+.consult-form input:focus,
+.consult-form textarea:focus {
+  outline: 2px solid #d4af37;
 }
 
-/* Contact info section */
+.consult-form button {
+  background: #d4af37;
+  color: #000;
+  padding: 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.consult-form button:hover {
+  background: #f5d06f;
+}
+
+/* Contact Info */
 .contact-info {
-    margin-top: 30px;
+  padding: 40px 20%;
+  text-align: center;
 }
 
 .contact-info h2 {
-    font-size: 1.8rem;
-    color: #004d40;
-    margin-bottom: 10px;
-}
-
-.contact-info p {
-    font-size: 1.2rem;
-    color: #555;
+  font-size: 28px;
+  color: #d4af37;
+  margin-bottom: 20px;
 }
 
 .contact-info ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
 }
 
 .contact-info ul li {
-    font-size: 1.2rem;
-    color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
 .contact-info ul li a {
-    color: #004d40;
-    text-decoration: none;
+  color: #d4af37;
+  text-decoration: none;
 }
 
 .contact-info ul li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Footer */
 footer {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 1rem;
-    color: #777;
+  background: #081423;
+  color: #888;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
 }
