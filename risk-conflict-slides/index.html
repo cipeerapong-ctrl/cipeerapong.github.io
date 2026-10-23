@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>การจัดการความเสี่ยงและความขัดแย้งในงานอาชีพ</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fa;--sf:#fff;--tx:#14213d;--mu:#4a566e;--ac:#0f6e8c;--ac2:#c8811a;--ln:#dbe1ec;--nv:#0f1f3d}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1626;--sf:#16233a;--tx:#eef2fa;--mu:#aab6cc;--ac:#4cc0e0;--ac2:#e9a73e;--ln:#2a3a57}}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:Sarabun,sans-serif}
+.s{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;padding:calc(5vh + env(safe-area-inset-top,0px)) 8vw calc(10vh + env(safe-area-inset-bottom,0px));opacity:0;visibility:hidden;transition:opacity .45s,visibility .45s;overflow-y:auto}
+.s.on{opacity:1;visibility:visible}
+.lb{font-family:Prompt;font-weight:500;color:var(--ac);font-size:clamp(14px,1.6vw,22px);letter-spacing:.04em;margin-bottom:1vh}
+h2{font-family:Prompt;font-weight:600;font-size:clamp(28px,4vw,56px);line-height:1.25;margin-bottom:3.5vh;padding-bottom:2vh;border-bottom:3px solid var(--ac);width:fit-content;max-width:100%}
+h1{font-family:Prompt;font-weight:700;font-size:clamp(32px,6vw,84px);line-height:1.2;color:#fff}
+p,li{font-size:clamp(17px,2.1vw,30px);line-height:1.65;color:var(--mu)}
+b{color:var(--tx);font-weight:600}
+.g{display:grid;gap:1.8vw;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.c{background:var(--sf);border:1px solid var(--ln);border-top:4px solid var(--ac);border-radius:10px;padding:2vw 1.8vw}
+.c.o{border-top-color:var(--ac2)}
+.c h3{font-family:Prompt;font-weight:600;font-size:clamp(19px,2.4vw,34px);margin-bottom:1vh;line-height:1.3}
+.c p,.c li{font-size:clamp(16px,1.9vw,27px)}
+.n{font-family:Prompt;font-weight:700;font-size:clamp(28px,3.6vw,52px);color:var(--ac);line-height:1.1;display:block;margin-bottom:.8vh}
+.o .n{color:var(--ac2)}
+ul{padding-left:1.2em}li{margin-bottom:.6vh}
+.q{font-size:clamp(20px,2.8vw,40px);line-height:1.6;color:var(--tx);border-left:6px solid var(--ac2);padding-left:2.2vw;margin-bottom:3vh}
+.row{display:flex;gap:1.6vw;align-items:baseline;padding:1.3vh 0;border-bottom:1px solid var(--ln)}
+.row .n{font-size:clamp(20px,2.6vw,38px);min-width:3.2em;margin:0}
+.row p{color:var(--tx)}
+.pc{display:flex;gap:.8em;margin-top:.8vh}.pc span{font-family:Prompt;font-weight:600;font-size:clamp(14px,1.6vw,22px);min-width:3.4em}
+.pc p{font-size:clamp(15px,1.7vw,24px)}
+.ok{color:#1a8f5a}.no{color:#c0392b}
+.dk{background:var(--nv);color:#fff}
+.dk h1{color:#fff}.dk p{color:#c5d0e6}.dk .lb{color:#7fd3ec}
+.dk h2{color:#fff;border-color:#e9a73e}
+.bar{position:absolute;left:0;top:0;bottom:0;width:1.2vw;background:var(--ac2)}
+.a{opacity:0}
+.s.on .a{animation:up .65s cubic-bezier(.22,.8,.3,1) both}
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.ft{position:fixed;z-index:5;left:8vw;right:8vw;bottom:calc(2.2vh + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:center;font-family:Prompt;font-size:14px;color:var(--mu)}
+.ft button{background:var(--sf);border:1px solid var(--ln);color:var(--tx);width:42px;height:42px;border-radius:8px;font-size:16px;cursor:pointer;margin-left:8px}
+.ft button:hover{background:var(--ac);color:#fff}
+#pr{position:fixed;top:0;left:0;height:5px;background:var(--ac2);z-index:9;transition:width .4s}
+</style></head><body>
+<div id="pr"></div><div id="D"></div>
+<div class="ft"><span id="ct"></span><span><button id="pv">&#9664;</button><button id="nx">&#9654;</button></span></div>
+<script>
+const H=(l,t)=>`<div class="lb a">${l}</div><h2 class="a">${t}</h2>`;
+const C=(t,b,o)=>`<div class="c a${o?' o':''}"><h3>${t}</h3>${b}</div>`;
+const N=(n,t,b,o)=>`<div class="c a${o?' o':''}"><span class="n">${n}</span><h3>${t}</h3>${b?`<p>${b}</p>`:''}</div>`;
+const R=a=>a.map(x=>`<div class="row a"><span class="n">${x[0]}</span><p>${x[1]}</p></div>`).join('');
+const L=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+const G=x=>`<div class="g">${x}</div>`;
+const S=[
+`<div class="dk-in"><div class="lb a" style="color:#7fd3ec">หน่วยที่ 2</div><h1 class="a">การกำหนดแนวทางจัดการ<br>ความเสี่ยงและความขัดแย้ง<br>ในงานอาชีพ</h1><p class="a" style="margin-top:4vh;color:#c5d0e6">Risk Management and Conflict Resolution</p></div>`,
+H('สารบัญ','เนื้อหาที่จะเรียนรู้')+R([[1,'ความหมายของการบริหารความเสี่ยง'],[2,'องค์ประกอบของการบริหารความเสี่ยง'],[3,'การบริหารความเสี่ยงในองค์การ'],[4,'แนวคิดความขัดแย้งกับการสร้างทีม'],[5,'แนวคิดเกี่ยวกับวิธีการแก้ไขความขัดแย้ง']]),
+H('1. ความหมาย','ความเสี่ยงคืออะไร')+`<p class="q a">เหตุการณ์หรือการกระทำใด ๆ ที่อาจเกิดขึ้นภายใต้<b>สถานการณ์ที่ไม่แน่นอน</b> แล้วทำให้เกิดความเสียหาย ความล้มเหลว หรือลดโอกาสที่จะบรรลุเป้าหมาย</p>`+G(N('01','วัดความสามารถ','ในการดำเนินงานให้สำเร็จ ภายใต้ข้อจำกัดด้านงบประมาณ เวลา และเทคนิค')+N('02','เกิดได้ตลอดเวลา','เพราะมาจากความไม่แน่นอน และทรัพยากรที่มีจำกัด',1)+N('03','อีกชื่อหนึ่งคืออุบัติภัย','ภัยที่องค์การต้องเผชิญในช่วงเวลาใดเวลาหนึ่ง')),
+H('1. ความหมาย','การบริหารความเสี่ยง')+G(N('01','กลวิธีเชิงเหตุผล','บ่งชี้ วิเคราะห์ ประเมิน จัดการ ติดตาม และสื่อสารความเสี่ยงของหน่วยงาน')+N('02','เป้าหมาย','ลดความสูญเสียให้น้อยที่สุด และเพิ่มโอกาสแก่องค์การให้มากที่สุด',1)+N('03','ผสานกับองค์การ','รวมวัฒนธรรม กระบวนการ และโครงสร้างเข้าด้วยกัน ส่งผลต่อประสิทธิภาพการบริหาร')),
+H('1. ความหมาย','ลักษณะสำคัญของการบริหารความเสี่ยง')+G(N('1.1','เป็นส่วนหนึ่งขององค์การ','เป็นกลไกขับเคลื่อนสู่การกำกับดูแลกิจการที่ดี')+N('1.2','สอดคล้องกับแผนงาน','ช่วยการตัดสินใจและใช้ร่วมกับองค์ประกอบอื่นได้',1)+N('1.3','พิจารณาทั้งหมด','ครอบคลุมกลยุทธ์ การดำเนินงาน กฎระเบียบ และการเงิน')+N('1.4','ความเสี่ยงโดยรวม','ของทุกองค์การ แบ่งเป็น 4 ประเภท',1)),
+H('1.4 ประเภท','ความเสี่ยง 4 ด้านของทุกองค์การ')+G(N('01','กลยุทธ์','ความเสี่ยงเกี่ยวกับกลยุทธ์')+N('02','ประสิทธิภาพ','และประสิทธิผลในการดำเนินงาน',1)+N('03','การรายงาน','ทุกประเภท รวมทั้งรายงานทางการเงิน')+N('04','กฎหมาย','การปฏิบัติตามกฎหมาย ระเบียบ และคำสั่งที่เกี่ยวข้อง',1)),
+H('2. องค์ประกอบ','องค์ประกอบของการบริหารความเสี่ยง')+G(N('ขั้นที่ 1','ระบุภัย','ระบุว่าองค์การกำลังเผชิญภัยอะไร ลักษณะและขอบเขตอย่างไร')+N('ขั้นที่ 2','ประเมินผลกระทบ','ประเมินว่าภัยจะกระทบองค์การอย่างไร เพื่อเตรียมรับมือให้เหมาะสม',1)+N('ขั้นที่ 3','จัดทำมาตรการตอบโต้','จัดลำดับความสำคัญของมาตรการรับมือภัยแต่ละชนิด')),
+H('2. องค์ประกอบ','มาตรการตอบโต้ 7 แบบ')+R([['2.1','ขจัดหรือลดความรุนแรงของภัย'],['2.2','ป้องกันผู้รับภัยไม่ให้ประสบภัยโดยตรง'],['2.3','ภัยตกจากที่สูง : ติดเข็มขัดนิรภัย'],['2.4','ไอระเหยหรือสารพิษ : สวมหน้ากากป้องกัน'],['2.5','ลดความรุนแรงเหตุฉุกเฉิน : ผนังกันไฟ สปริงเกอร์'],['2.6','มาตรการกู้ภัย ลดความสูญเสียโดยตรง'],['2.7','มาตรการกลับคืนสภาพ ลดความเสียหายต่อเนื่อง']]),
+H('3. ในองค์การ','ความสำคัญและแหล่งที่มาของความเสี่ยง')+`<p class="q a">การบริหารความเสี่ยงคือการ<b>ทำนายอนาคตอย่างมีเหตุผล</b> เพื่อป้องกันความเสียหายไว้ล่วงหน้า</p>`+G(C('ภายในองค์การ',L(['สถานที่ทำงานไม่ปลอดภัย','ระบบบัญชีและการเงินไม่น่าเชื่อถือ','วัฒนธรรมไม่เอื้อต่อการทำงาน','บุคลากรไม่เพียงพอ ขาดการอบรม','ความขัดแย้งของผลประโยชน์']))+C('ภายนอกองค์การ',L(['กฎหมายเปลี่ยนแปลง','พฤติกรรมผู้บริโภค กระแสสังคม','โลกาภิวัตน์ เสถียรภาพการเมือง','สิ่งแวดล้อม เทคโนโลยี']),1)),
+H('3. ในองค์การ','ระบบที่ดีและปัจจัยแห่งความสำเร็จ')+G(C('ระบบบริหารความเสี่ยงที่ดี',L(['วางแผนและทำเอกสารอย่างเป็นระบบ','พร้อมค้นหาและจัดการ ไม่หลบปัญหา','ประเมินซ้ำตามระยะเวลา','มีเกณฑ์ประเมินที่เป็นมาตรฐาน','รายงานเป็นลายลักษณ์อักษรต่อผู้บริหาร']))+C('ปัจจัยความสำเร็จ',L(['เทคโนโลยีและสารสนเทศ','ฝึกอบรมบุคลากรให้เข้าใจระบบ','แรงผลักดันจากผู้บริหาร','ความร่วมแรงร่วมใจทุกระดับ']),1)),
+H('3.3 กลยุทธ์','กลยุทธ์บริหารความเสี่ยงที่ใช้กันเป็นสากล (4T)')+G(N('Take','ยอมรับ (Risk Acceptance)','ต้นทุนควบคุมสูงกว่าผลที่ได้ จึงยอมรับ แต่ต้องกำหนดระดับผลกระทบที่รับได้')+N('Treat','ลด/ควบคุม (Risk Reduction)','ปรับปรุงงาน ติดตั้งอุปกรณ์ความปลอดภัย ฝึกอบรม',1)+N('Terminate','หลีกเลี่ยง (Risk Avoidance)','หยุดหรือเปลี่ยนกิจกรรมเสี่ยง ลดขอบเขตการดำเนินการ')+N('Transfer','โอน/กระจาย (Risk Sharing)','ทำประกัน จ้างบริษัทภายนอก ทำสำเนาเอกสาร',1)),
+H('3.4 ขั้นตอน','ขั้นตอนของกระบวนการบริหารความเสี่ยง')+R([['1','จัดให้มีโครงสร้าง เช่น คณะกรรมการรับผิดชอบกำกับดูแล'],['2','กำหนดขอบเขต นโยบาย วัตถุประสงค์ กลยุทธ์ และระดับความเสี่ยงที่ยอมรับได้'],['3','ดำเนินการตามกระบวนการ 5 ขั้นตอน โดยใช้หลัก SMART'],['4','กำหนดแนวทางจัดการความเสี่ยงและความขัดแย้งที่อาจขัดขวางเป้าหมาย']]),
+H('3.4.3 หลักการ','วัตถุประสงค์ตามหลัก SMART')+R([['S','<b>Specific</b> ชัดเจน : ระบุผลลัพธ์ที่ต้องการให้ทุกคนเข้าใจ'],['M','<b>Measurable</b> วัดผลได้ : มีเกณฑ์การวัดผล'],['A','<b>Achievable</b> บรรลุผลได้ : เป็นไปได้ตามเวลาและทรัพยากร'],['R','<b>Realistic</b> สมเหตุผล : สอดคล้องกับเป้าหมายระดับที่สูงกว่า'],['T','<b>Timely</b> มีกำหนดเวลาที่ชัดเจน']]),
+H('4. ความขัดแย้ง','ความขัดแย้งกับการสร้างทีม : 2 มุมมอง')+`<p class="a" style="margin-bottom:3vh">คนที่แตกต่างกันมาทำงานร่วมกัน มักเกิดความขัดแย้งขึ้นเสมอ</p>`+G(C('4.1 ความคิดคือตัวเอง','<p>ใครคิดต่างถือเป็นศัตรู ทำให้การจัดการยากลำบาก เป็นมุมมองของการต่อสู้ฟาดฟัน</p>',1)+C('4.2 จริงทั้งคู่ แต่ไม่ถูกที่สุด','<p>ไม่มีอะไรถูกที่สุด ควรอธิบายความคิดเห็นและรับฟังกัน เมื่อแก้ปัญหาแล้วกลับมาร่วมงานได้เหมือนเดิม</p>')),
+H('4.3 สาเหตุ','สาเหตุของความขัดแย้ง')+R([['1','ผลประโยชน์ ทั้งส่วนบุคคลและองค์การ'],['2','ยึดมั่นกับความคิดของตนเองมากเกินไป'],['3','แยกเรื่องส่วนตัวและเรื่องส่วนรวมไม่ออก'],['4','ความแตกต่างของวิธีคิด ระเบียบ และบุคลิกนิสัย'],['5','ไม่เข้าใจวิธีคิดของแต่ละคน'],['6','ขาดสติ พยายามปกป้องหน้าตาตนเอง']]),
+H('5.1 วิธีพื้นฐาน','วิธีแก้ไขความขัดแย้ง 4 วิธี')+G([['หลีกเลี่ยง','ได้ผลน้อยที่สุด เพียงหลบปัญหา เหมาะกับเรื่องไม่สำคัญ','ทำได้ง่าย','ปัญหายังคงอยู่'],['ปรองดอง','ยอมสละความต้องการของตนให้อีกฝ่าย','บรรเทาได้รวดเร็ว','ผู้เสียประโยชน์รอวันแก้แค้น'],['ประนีประนอม','พบกันครึ่งทาง ต่างฝ่ายยอมลดบางส่วน','ต่างฝ่ายได้เท่ากัน','ฝ่ายเสียเปรียบขุ่นเคืองใจ'],['แข่งขัน','เอาแพ้เอาชนะ ใช้อำนาจหรือความก้าวร้าว','ได้สิ่งที่ตนหวัง','ต้องทำลายอีกฝ่าย']].map((x,i)=>C(x[0],`<p>${x[1]}</p><div class="pc"><span class="ok">ข้อดี</span><p>${x[2]}</p></div><div class="pc"><span class="no">ข้อเสีย</span><p>${x[3]}</p></div>`,i%2)).join('')),
+H('5.2 กระบวนการ','กระบวนการแก้ไขความขัดแย้ง 5 ขั้น')+R([['1','<b>แสดงออก</b> : สังเกตได้จากท่าทางและคำพูด เป็นตัวชี้วัดแรก'],['2','<b>ตระหนัก</b> : แจ้งทีมงาน ใช้ขั้นตอน CRP แก้ไข และเปิดหารืออย่างเปิดเผย'],['3','<b>เข้าใจ</b> : ให้ทั้ง 2 ฝ่ายอธิบายความต้องการ เพื่อหาทางออกแบบ Win-Win'],['4','<b>ตกลงเรื่องทั่วไป</b> : ระบุประโยชน์ร่วมกัน ทุกคนรับผิดชอบ'],['5','<b>แก้ปัญหา</b> : ยอมสละอย่างหนึ่งเพื่อได้อีกอย่าง และให้รางวัลเมื่อบรรลุข้อตกลง']]),
+H('5.3 ปัจจัย','ปัจจัยทั่วไปที่นำไปสู่ความขัดแย้ง')+G(N('1','เข้าใจผิดเรื่องความต่าง','เป้าหมาย วิธีทำงาน เงื่อนไขและค่าแรง ความรับผิดชอบ คุณค่าและความเชื่อ')+N('2','ขาดการสื่อสาร','การสื่อสารต้องชัดเจนสมบูรณ์ ทั้งผู้ส่งและผู้รับสาร',1)+N('3','ขาดการวางแผนและทิศทาง','นำไปสู่ความตึงเครียดและปัญหาต่อเนื่อง')+N('4','คัดเลือกบุคลากรไม่เหมาะสม','ควรเลือกจากภายในหน่วยงานก่อน',1)+N('5','คับข้องใจ เครียด เหนื่อยล้า','จากความรุนแรง คำพูดไม่เหมาะสม ที่ทำงานสกปรก เสียงดัง ถูกคุกคาม วิกฤตต่อเนื่อง ขาดการสนับสนุน')),
+H('สรุปท้ายหน่วย','สรุป')+`<p class="q a">ความขัดแย้งมีต้นเหตุสำคัญจาก<b>การสื่อสารที่ขาดประสิทธิผล</b> ความอ่อนแอของผู้นำ ความไม่พอใจในการบริหารจัดการ และความต้องการอำนาจ</p><p class="q a">การบริหารความเสี่ยงคือการ<b>ระบุ วิเคราะห์ ประเมิน ดูแล ตรวจสอบ และควบคุม</b> เพื่อลดความเสียหายและเพิ่มโอกาสแก่องค์การให้มากที่สุด</p>`,
+`<div><h1 class="a">ขอบคุณครับ</h1><p class="a" style="margin-top:3vh;color:#c5d0e6">ยินดีรับคำถามและข้อเสนอแนะ</p></div>`
+];
+const D=document.getElementById('D');
+D.innerHTML=S.map((h,k)=>{const d=(k==0||k==S.length-1);return `<section class="s${d?' dk':''}">${d?'<div class="bar"></div>':''}${h}</section>`}).join('');
+const E=[...D.children];E.forEach(s=>s.querySelectorAll('.a').forEach((e,i)=>e.style.animationDelay=(.12+i*.1)+'s'));
+let i=0;
+function go(n){i=Math.max(0,Math.min(E.length-1,n));E.forEach((s,j)=>{s.classList.toggle('on',j==i);if(j==i)s.scrollTop=0});
+document.getElementById('ct').textContent=(i+1)+' / '+E.length;document.getElementById('pr').style.width=((i+1)/E.length*100)+'%';
+document.querySelector('.ft').style.color=(i==0||i==E.length-1)?'#c5d0e6':'';
+try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+document.getElementById('nx').onclick=()=>go(i+1);document.getElementById('pv').onclick=()=>go(i-1);
+addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();go(i+1)}if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key))go(i-1)});
+let x0;addEventListener('touchstart',e=>x0=e.touches[0].clientX);addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>60)go(i+(d<0?1:-1))});
+go(0);
+</script></body></html>
+
