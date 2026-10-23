@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f5ee">
+<title>การจัดการความเสี่ยงและความขัดแย้งในงานอาชีพ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#f7f5ee;--bg-secondary:#fffefa;--text-primary:#18342b;--text-secondary:#60756d;
+  --accent:#24745c;--accent-secondary:#7957a5;--coral:#d9785d;--gold:#d4a548;
+  --line:#d9e2d9;--pale-green:#e6f0e9;--pale-purple:#eee9f5;--pale-coral:#f7ebe5;
+  --font-heading:'Noto Sans Thai',Tahoma,sans-serif;--font-body:'Noto Sans Thai',Tahoma,sans-serif;
+  --title-size:clamp(2rem,4.3vw,4.4rem);--body-size:clamp(1rem,1.32vw,1.3rem);
+  --ease-out-expo:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);line-height:1.55;-webkit-font-smoothing:antialiased}
+body{overscroll-behavior:none}
+#deck{position:relative;width:100vw;height:100vh;height:100dvh;overflow:hidden;isolation:isolate}
+.slide{position:absolute;inset:0;width:100vw;height:100vh;height:100dvh;overflow:hidden;display:grid;place-items:center;padding:clamp(1.1rem,3.2vw,3.2rem);background:var(--bg-primary);opacity:0;visibility:hidden;transform:translateX(4vw) scale(.985);transition:opacity .55s var(--ease-out-expo),transform .7s var(--ease-out-expo),visibility .55s;pointer-events:none}
+.slide.is-active{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.slide::before{content:"";position:absolute;inset:0 auto 0 0;width:clamp(7px,.8vw,12px);background:linear-gradient(180deg,var(--accent),var(--accent-secondary))}
+.slide:nth-child(3n+1)::before{background:linear-gradient(180deg,var(--accent-secondary),var(--coral))}
+.slide::after{content:"";position:absolute;width:clamp(15rem,33vw,34rem);aspect-ratio:1;border:1px solid rgba(36,116,92,.09);border-radius:50%;right:-14vw;top:-21vw;pointer-events:none}
+.inner{width:min(94vw,1680px);max-height:100%;min-height:80vh;position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:clamp(.45rem,1vh,.9rem)}
+.kicker{display:flex;align-items:center;gap:.65rem;color:var(--accent);font-size:clamp(.76rem,1vw,1rem);font-weight:700;letter-spacing:.04em;margin-bottom:clamp(.45rem,1vw,.9rem)}
+.kicker::before{content:"";width:1.5rem;height:3px;border-radius:9px;background:var(--coral)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--font-heading);font-weight:800;letter-spacing:-.025em}
+h1{font-size:var(--title-size);line-height:1.14;max-width:14ch}
+h2{font-size:clamp(1.8rem,3.3vw,3.5rem);line-height:1.2;margin-bottom:clamp(.45rem,1.2vw,1rem)}
+h3{font-size:clamp(1.05rem,1.55vw,1.4rem);line-height:1.3}
+p,.copy{font-size:var(--body-size);color:var(--text-secondary);line-height:1.6}
+strong{color:var(--text-primary)}
+.lead{font-size:clamp(1.15rem,1.8vw,1.7rem);line-height:1.55;max-width:65ch;color:var(--text-secondary)}
+.small{font-size:clamp(.8rem,1.02vw,1rem);line-height:1.5}
+.page-ref{margin-top:0;padding-top:.5rem;font-size:clamp(.68rem,.85vw,.86rem);color:#84928b}
+.section-top{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.tag{display:inline-flex;align-items:center;gap:.45rem;border:1px solid var(--line);border-radius:999px;padding:.35rem .75rem;background:rgba(255,254,250,.72);font-size:clamp(.7rem,.85vw,.86rem);font-weight:700;color:var(--text-secondary)}
+.num{width:2.4rem;height:2.4rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:white;font-weight:800;flex:none}
+.pill{display:inline-flex;align-items:center;padding:.26rem .7rem;border-radius:999px;background:var(--pale-green);color:var(--accent);font-size:.8em;font-weight:700}
+.rule{height:1px;background:var(--line);margin:clamp(.7rem,1.5vw,1.2rem) 0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.75rem,1.5vw,1.35rem)}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.65rem,1.15vw,1rem)}
+.card{position:relative;background:var(--bg-secondary);border:1px solid var(--line);border-radius:1.1rem;padding:clamp(.9rem,1.55vw,1.45rem);box-shadow:0 8px 22px rgba(30,65,50,.045)}
+.card p{font-size:clamp(.9rem,1.16vw,1.12rem);margin-top:.4rem}
+.card .label{font-size:.78rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.35rem}
+.card.purple{background:var(--pale-purple);border-color:#ddd3eb}
+.card.green{background:var(--pale-green)}
+.card.coral{background:var(--pale-coral);border-color:#ecd5cb}
+.big-number{font-size:clamp(2.2rem,4vw,4rem);line-height:1;color:var(--accent);font-weight:800}
+.note{border-left:4px solid var(--gold);padding:.75rem 1rem;background:#fff8e9;border-radius:0 .8rem .8rem 0;color:#5c5949;font-size:clamp(.9rem,1.15vw,1.12rem);line-height:1.5}
+.flow{display:flex;align-items:stretch;gap:.6rem}
+.flow-step{flex:1;background:var(--bg-secondary);border:1px solid var(--line);border-radius:1rem;padding:1rem;position:relative}
+.flow-step b{display:block;color:var(--accent);font-size:clamp(.95rem,1.35vw,1.25rem);margin:.4rem 0 .15rem}
+.flow-step small{display:block;color:var(--text-secondary);font-size:clamp(.78rem,1vw,.96rem);line-height:1.45}
+.arrow{display:grid;place-items:center;color:var(--coral);font-size:1.5rem;font-weight:800;flex:none}
+.list{display:grid;gap:.6rem;list-style:none}
+.list li{display:grid;grid-template-columns:2rem 1fr;gap:.55rem;align-items:start;font-size:clamp(.9rem,1.2vw,1.15rem);line-height:1.48;color:var(--text-secondary)}
+.list .bullet{width:1.8rem;height:1.8rem;border-radius:.55rem;background:var(--pale-green);color:var(--accent);display:grid;place-items:center;font-size:.82rem;font-weight:800}
+.topic-map{display:grid;grid-template-columns:repeat(5,1fr);gap:.65rem;margin-top:1rem}
+.topic{border-top:4px solid var(--accent);background:var(--bg-secondary);border-radius:.3rem .3rem .9rem .9rem;padding:clamp(1rem,1.5vw,1.6rem);min-height:clamp(9rem,18vh,13rem);display:flex;flex-direction:column;justify-content:center}
+.topic:nth-child(2){border-color:var(--gold)}.topic:nth-child(3){border-color:var(--coral)}.topic:nth-child(4){border-color:var(--accent-secondary)}.topic:nth-child(5){border-color:#43839a}
+.topic .topic-no{font-weight:800;color:var(--text-secondary);font-size:.9rem}.topic h3{font-size:clamp(.95rem,1.22vw,1.18rem);margin:.4rem 0}
+.topic p{font-size:clamp(.82rem,1.05vw,1rem);line-height:1.45}
+.risk-scale{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:.5rem}
+.scale-item{border-radius:.8rem;background:var(--pale-green);padding:.65rem;text-align:center;font-size:clamp(.78rem,1vw,.96rem);font-weight:700;color:var(--accent)}
+.scale-item:nth-child(2){background:#f7efd9;color:#8a681d}.scale-item:nth-child(3){background:var(--pale-coral);color:#a2513c}
+.response-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
+.response{display:grid;grid-template-columns:2.1rem 1fr;gap:.6rem;align-items:start;padding:.72rem .8rem;background:var(--bg-secondary);border:1px solid var(--line);border-radius:.85rem}
+.response .rnum{width:1.8rem;height:1.8rem;border-radius:.55rem;background:var(--accent);color:white;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.response p{font-size:clamp(.82rem,1.08vw,1rem);line-height:1.4}
+.t4{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
+.t4 .card{padding:1.1rem}
+.t4 h3{font-size:clamp(1.05rem,1.5vw,1.35rem)}
+.t4 .sub{font-weight:800;color:var(--accent-secondary);font-size:.82rem;margin-top:.25rem}
+.smart{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
+.smart div{text-align:center;padding:.75rem .45rem;border-radius:.8rem;background:var(--pale-purple);color:#594478}
+.smart b{display:block;font-size:1.25rem;color:var(--accent-secondary)}
+.smart span{font-size:clamp(.75rem,.9vw,.9rem);line-height:1.25;display:block}
+.methods{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+.method{padding:1rem;border-radius:1rem;background:var(--bg-secondary);border:1px solid var(--line);border-top:4px solid var(--accent)}
+.method:nth-child(2){border-top-color:var(--gold)}.method:nth-child(3){border-top-color:var(--accent-secondary)}.method:nth-child(4){border-top-color:var(--coral)}
+.method h3{margin:.35rem 0}.method p{font-size:clamp(.8rem,1vw,.98rem)}
+.step-track{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;position:relative}
+.step{position:relative;border-radius:1rem;background:var(--bg-secondary);padding:1rem .85rem;border:1px solid var(--line)}
+.step .stepnum{font-size:.78rem;color:var(--accent);font-weight:800}
+.step h3{font-size:clamp(.95rem,1.22vw,1.15rem);margin:.3rem 0}
+.step p{font-size:clamp(.78rem,.95vw,.92rem);line-height:1.4}
+.decor{position:absolute;right:clamp(1.2rem,6vw,5rem);bottom:9vh;width:clamp(11rem,22vw,20rem);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f3e8c8 0 17%,transparent 17.5%),radial-gradient(circle at 65% 63%,#d9e9df 0 28%,transparent 28.5%),radial-gradient(circle at 52% 44%,#e6def0 0 49%,transparent 49.5%);opacity:.8;z-index:-1}
+.cover-bottom{display:flex;align-items:center;gap:.7rem;margin-top:1.4rem;color:var(--text-secondary);font-weight:600;font-size:clamp(.9rem,1.25vw,1.15rem)}
+.cover-bottom span{display:block;width:2.2rem;height:3px;background:var(--coral);border-radius:2px}
+.question{font-size:clamp(1.1rem,1.8vw,1.7rem);line-height:1.5;color:var(--text-primary);font-weight:700}
+.sources a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px;overflow-wrap:anywhere}
+.controls{position:fixed;z-index:10;right:clamp(.8rem,2vw,1.5rem);bottom:clamp(.8rem,1.7vw,1.2rem);display:flex;align-items:center;gap:.45rem;background:rgba(255,254,250,.92);border:1px solid var(--line);border-radius:999px;padding:.35rem .45rem;box-shadow:0 8px 24px rgba(24,52,43,.12);backdrop-filter:blur(12px)}
+.controls button{font:inherit;color:var(--text-primary);background:transparent;border:0;cursor:pointer;border-radius:999px;min-width:2.35rem;height:2.35rem;padding:0 .55rem;display:grid;place-items:center;transition:background .2s,transform .2s}
+.controls button:hover{background:var(--pale-green);transform:translateY(-1px)}
+.controls button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+#count{font-size:.85rem;font-weight:800;color:var(--text-secondary);min-width:3.6rem;text-align:center}
+.progress{position:fixed;z-index:11;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-secondary),var(--coral));transition:width .5s var(--ease-out-expo)}
+.hint{position:fixed;left:1.3rem;bottom:1.25rem;color:#78887f;font-size:.76rem;z-index:5}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s var(--ease-out-expo),transform .65s var(--ease-out-expo)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal:nth-child(2){transition-delay:.07s}.reveal:nth-child(3){transition-delay:.14s}.reveal:nth-child(4){transition-delay:.21s}.reveal:nth-child(5){transition-delay:.28s}.reveal:nth-child(6){transition-delay:.35s}
+@media(max-width:900px){
+  .topic-map{grid-template-columns:repeat(5,minmax(0,1fr));gap:.4rem}.topic{padding:.75rem .55rem;min-height:8rem}
+  .t4,.methods{gap:.5rem}.t4 .card,.method{padding:.8rem}
+}
+@media(max-width:700px){
+  .slide{padding:1rem 1.15rem 4rem}
+  .inner{overflow:hidden;max-height:100%;min-height:0;justify-content:flex-start;gap:.55rem;padding:.2rem .1rem}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .topic-map{grid-template-columns:1fr 1fr}
+  .topic{min-height:0}
+  .t4,.methods{grid-template-columns:1fr 1fr}
+  .flow{flex-wrap:wrap}.flow-step{min-width:42%}.arrow{display:none}
+  .step-track{grid-template-columns:1fr 1fr}
+  .response-grid{grid-template-columns:1fr}
+  .hint{display:none}
+}
+@media(max-height:700px){
+  .slide{padding:1.1rem 3rem}.inner{max-height:93vh;min-height:0;justify-content:flex-start;gap:.35rem}
+  h2{font-size:clamp(1.45rem,2.6vw,2.45rem);margin-bottom:.45rem}
+  .card{padding:.75rem}
+  .page-ref{padding-top:.5rem}
+}
+@media(max-height:600px){
+  .slide{padding:.7rem 2.4rem}.inner{max-height:95vh;min-height:0;justify-content:flex-start;gap:.3rem}
+  .lead,p,.copy{line-height:1.42}
+  .card p{margin-top:.2rem}
+  .topic{min-height:0;padding:.55rem}
+}
+@media(max-height:500px){
+  .slide{padding:.55rem 2rem}.inner{max-height:96vh;min-height:0;justify-content:flex-start;gap:.2rem}
+  h1{font-size:clamp(1.55rem,4vw,2.5rem)}h2{font-size:clamp(1.2rem,3vw,1.8rem)}
+  .kicker{margin-bottom:.25rem}.page-ref{font-size:.65rem}
+}
+@media(max-width:600px) and (orientation:portrait){
+  .topic-map{grid-template-columns:1fr}
+  .topic{display:grid;grid-template-columns:2.4rem 1fr;align-items:center;gap:.4rem}
+  .topic p{grid-column:2}
+  .t4,.methods{grid-template-columns:1fr 1fr}
+  .smart{gap:.2rem}.smart div{padding:.5rem .2rem}
+  .smart span{font-size:.68rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+@media print{
+  html,body,#deck{height:auto;overflow:visible}
+  .slide{position:relative;opacity:1;visibility:visible;transform:none;page-break-after:always;width:100%;height:100vh}
+  .controls,.progress,.hint{display:none}
+  .reveal{opacity:1;transform:none}
+}
+/* Readability pass: larger type and roomier cards */
+:root{--title-size:clamp(2.5rem,5vw,5.1rem);--body-size:clamp(1.15rem,1.62vw,1.55rem)}
+h2{font-size:clamp(2rem,3.65vw,3.85rem)}
+h3{font-size:clamp(1.2rem,1.7vw,1.6rem)}
+.lead{font-size:clamp(1.3rem,2vw,1.9rem)}
+.card p{font-size:clamp(1.02rem,1.3vw,1.28rem)}
+.small{font-size:clamp(.94rem,1.15vw,1.12rem)}
+.list li{font-size:clamp(1rem,1.25vw,1.22rem)}
+.topic{min-height:clamp(10.5rem,21vh,15rem);padding:clamp(1.15rem,1.7vw,1.8rem)}
+.topic h3{font-size:clamp(1.08rem,1.4vw,1.35rem)}
+.topic p{font-size:clamp(.9rem,1.08vw,1.05rem)}
+.response p{font-size:clamp(.94rem,1.16vw,1.1rem)}
+.flow-step small,.step p,.method p{font-size:clamp(.9rem,1.08vw,1.06rem)}
+@media(max-height:700px){:root{--body-size:clamp(1rem,1.45vw,1.32rem)}h2{font-size:clamp(1.8rem,3.2vw,3rem)}.topic{min-height:clamp(8.8rem,16vh,11rem)}}
+@media(max-width:700px){:root{--body-size:clamp(1rem,3.3vw,1.2rem)}h2{font-size:clamp(1.7rem,6vw,2.5rem)}.topic{min-height:0}}
+/* Clarity pass: make content easier to scan and use more of the slide canvas */
+.inner{width:min(96vw,1720px);min-height:0;justify-content:flex-start;gap:clamp(.75rem,1.45vh,1.2rem)}
+h2{font-size:clamp(2.15rem,3.8vw,4rem);line-height:1.16;margin-bottom:.1rem}
+h3{font-size:clamp(1.2rem,1.65vw,1.6rem)}
+p,.copy{font-size:clamp(1.18rem,1.45vw,1.45rem);line-height:1.5}
+.lead{font-size:clamp(1.3rem,1.8vw,1.8rem);line-height:1.45;max-width:72ch}
+.kicker{font-size:clamp(.92rem,1.05vw,1.08rem);margin-bottom:0}
+.tag{font-size:clamp(.85rem,.98vw,1rem)}
+.response-grid.response-four{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+.response-three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.response{padding:clamp(1rem,1.5vw,1.5rem);gap:.9rem}
+.response p{font-size:clamp(1.12rem,1.35vw,1.35rem);line-height:1.5}
+.response .rnum{width:2.2rem;height:2.2rem;font-size:1rem}
+.step{padding:clamp(1rem,1.25vw,1.3rem)}
+.step h3{font-size:clamp(1.12rem,1.35vw,1.35rem)}
+.step p{font-size:clamp(1.05rem,1.2vw,1.2rem);line-height:1.48}
+.step .stepnum{font-size:.95rem}
+.note{font-size:clamp(1.08rem,1.25vw,1.25rem);padding:1rem 1.2rem}
+.page-ref{font-size:.9rem}
+.smart-large article{background:var(--pale-purple);border-radius:1rem;padding:1.2rem .75rem;text-align:center;display:grid;gap:.3rem;justify-items:center}
+.smart-large b{font-size:clamp(2.4rem,4vw,4rem);line-height:1}
+.smart-large strong{font-size:clamp(1.05rem,1.35vw,1.3rem);color:#594478}
+.smart-large span{font-size:clamp(1rem,1.2vw,1.2rem);line-height:1.4}
+@media(max-width:900px){.response-three{grid-template-columns:1fr}.response-grid.response-four{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.inner{gap:.7rem}.response-grid.response-four,.response-three{grid-template-columns:1fr}.smart-large{grid-template-columns:repeat(2,1fr)}.step-track{grid-template-columns:1fr 1fr}.lead{font-size:1.12rem}}
+@media(max-height:700px){.inner{gap:.55rem}h2{font-size:clamp(1.8rem,3.2vw,3rem)}.response{padding:.7rem}.note{padding:.65rem .9rem}.smart-large article{padding:.6rem}.lead{font-size:clamp(1rem,1.45vw,1.3rem)}}/* Full-stage redesign: rich contrast, useful scale, and purposeful motion */
+:root{--bg-primary:#0c1720;--bg-secondary:#132630;--text-primary:#f5faf8;--text-secondary:#bdcbd0;--accent:#62e0c1;--accent-secondary:#b39bff;--coral:#ff806b;--gold:#ffd166;--line:#31505b;--pale-green:#183b3b;--pale-purple:#302a49;--pale-coral:#432d31}
+html,body{background:#0c1720;color:var(--text-primary)}
+#deck{background:radial-gradient(ellipse at 15% 8%,rgba(98,224,193,.12),transparent 32%),radial-gradient(ellipse at 90% 85%,rgba(179,155,255,.12),transparent 35%),#0c1720}
+.slide{padding:clamp(1.3rem,3.3vh,2.8rem) clamp(1.25rem,4.5vw,5rem);background:linear-gradient(135deg,rgba(16,32,42,.98),rgba(9,20,29,.98));}
+.slide::before{width:9px;background:linear-gradient(180deg,var(--accent),var(--accent-secondary),var(--coral));box-shadow:0 0 24px rgba(98,224,193,.5)}
+.slide:nth-child(3n+1)::before{background:linear-gradient(180deg,var(--coral),var(--gold),var(--accent-secondary))}
+.slide::after{width:clamp(22rem,42vw,48rem);border:0;right:-15vw;top:-22vw;opacity:.13;filter:blur(2px);background:conic-gradient(from 20deg,transparent 0 20%,rgba(98,224,193,.7) 22%,transparent 26% 48%,rgba(179,155,255,.8) 52%,transparent 56% 78%,rgba(255,128,107,.65) 82%,transparent 86%);animation:orbit 28s linear infinite}
+.inner{width:min(94vw,1640px);height:100%;min-height:82vh;max-height:100%;justify-content:space-between;gap:clamp(.65rem,1.2vh,1rem)}
+.kicker{color:var(--accent);font-size:clamp(1rem,1.08vw,1.22rem);text-shadow:0 0 18px rgba(98,224,193,.22)}
+.tag{background:#142a34;border-color:#36545e;color:#d3dfdf;padding:.48rem .9rem}
+h1{font-size:clamp(3rem,6.2vw,7rem);line-height:1.06;max-width:13ch;text-shadow:0 8px 36px rgba(0,0,0,.35)}
+h2{font-size:clamp(2.45rem,4.15vw,4.8rem);line-height:1.12;max-width:27ch;text-wrap:balance;text-shadow:0 5px 28px rgba(0,0,0,.24)}
+h3{font-size:clamp(1.3rem,1.75vw,1.8rem)}
+p,.copy{font-size:clamp(1.18rem,1.42vw,1.52rem);line-height:1.55}
+.lead{font-size:clamp(1.35rem,1.8vw,1.9rem);line-height:1.48;max-width:70ch;color:#d0dcdd}
+.inner>.grid2,.inner>.grid3,.inner>.topic-map,.inner>.flow,.inner>.t4,.inner>.methods,.inner>.step-track,.inner>.response-grid,.inner>.response-three{flex:1;align-content:center}
+.grid2,.grid3{gap:clamp(1rem,1.6vw,1.7rem)}
+.card,.flow-step,.topic,.method,.step,.response{background:linear-gradient(145deg,rgba(22,43,54,.96),rgba(16,34,44,.96));border:1px solid rgba(129,176,177,.25);box-shadow:0 16px 42px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.035);border-radius:1.35rem}
+.card{padding:clamp(1.35rem,2vw,2.1rem)}
+.card.green{background:linear-gradient(145deg,#183c3b,#142f33);border-color:rgba(98,224,193,.36)}
+.card.purple{background:linear-gradient(145deg,#322d4d,#22253c);border-color:rgba(179,155,255,.32)}
+.card.coral{background:linear-gradient(145deg,#482e31,#30262d);border-color:rgba(255,128,107,.3)}
+.card p{font-size:clamp(1.16rem,1.42vw,1.5rem);line-height:1.55}
+.card .label{color:var(--gold);font-size:1rem}
+.flow{gap:clamp(.7rem,1.1vw,1.2rem)}
+.flow-step{flex:1;padding:clamp(1.1rem,1.6vw,1.7rem);min-height:clamp(10rem,17vh,13rem);display:flex;flex-direction:column;justify-content:center}
+.flow-step .num{width:3rem;height:3rem;font-size:1.15rem;box-shadow:0 0 24px rgba(98,224,193,.2)}
+.flow-step b{color:var(--text-primary);font-size:clamp(1.3rem,1.7vw,1.8rem);margin:.75rem 0 .25rem}
+.flow-step small{font-size:clamp(1.05rem,1.24vw,1.3rem);line-height:1.5;color:var(--text-secondary)}
+.arrow{color:var(--coral);font-size:2rem;text-shadow:0 0 16px rgba(255,128,107,.4)}
+.note{background:#2b291f;border-left:5px solid var(--gold);color:#f2e8ca;border-radius:0 1rem 1rem 0;padding:1.1rem 1.4rem;font-size:clamp(1.12rem,1.35vw,1.42rem);line-height:1.55}
+strong{color:#fff}
+.rule{background:var(--line)}
+.num,.response .rnum{box-shadow:0 0 22px rgba(98,224,193,.22)}
+.pill{background:#1b3939;color:#9ef0d9}
+.list li{color:#d3dfe0;font-size:clamp(1.12rem,1.3vw,1.38rem);line-height:1.5}
+.list .bullet{background:#1c4140;color:#a7f3dc}
+.topic-map{gap:clamp(.65rem,1vw,1rem)}
+.topic{min-height:clamp(13rem,25vh,20rem);padding:clamp(1rem,1.5vw,1.7rem);justify-content:center;border-top:5px solid var(--accent);overflow:hidden;position:relative}
+.topic::after{content:"";position:absolute;width:7rem;height:7rem;border-radius:50%;right:-2rem;bottom:-3rem;background:rgba(98,224,193,.12);filter:blur(1px)}
+.topic .topic-no{font-size:1.05rem;color:var(--gold)}
+.topic h3{font-size:clamp(1.25rem,1.55vw,1.65rem);color:var(--text-primary)}
+.topic p{font-size:clamp(1.05rem,1.2vw,1.3rem);line-height:1.5}
+.response-grid.response-four{gap:1rem}
+.response-three{gap:1rem}
+.response{padding:clamp(1.1rem,1.7vw,1.8rem)}
+.response p{font-size:clamp(1.14rem,1.38vw,1.48rem);line-height:1.55}
+.t4{gap:1rem}
+.t4 .card{height:100%;display:flex;flex-direction:column;justify-content:center;gap:.55rem}
+.t4 .big-number{font-size:clamp(3.4rem,6vw,6rem);color:var(--accent)!important;text-shadow:0 0 32px rgba(98,224,193,.25)}
+.t4 .sub{font-size:clamp(1.12rem,1.4vw,1.48rem);color:var(--gold)}
+.t4 .card p{font-size:clamp(1.08rem,1.25vw,1.32rem)}
+.step-track{gap:.8rem}
+.step{height:100%;padding:clamp(1rem,1.4vw,1.5rem);display:flex;flex-direction:column;justify-content:center}
+.step .stepnum{font-size:1rem;color:var(--gold)}
+.step h3{font-size:clamp(1.12rem,1.35vw,1.45rem);margin:.6rem 0}
+.step p{font-size:clamp(1.02rem,1.18vw,1.25rem);line-height:1.5}
+.methods{gap:1rem}
+.method{height:100%;padding:clamp(1rem,1.3vw,1.4rem);border-top:5px solid var(--accent)}
+.method:nth-child(2){border-top-color:var(--gold)}.method:nth-child(3){border-top-color:var(--accent-secondary)}.method:nth-child(4){border-top-color:var(--coral)}
+.method h3{margin:.55rem 0;color:var(--text-primary)}
+.method p{font-size:clamp(1.05rem,1.22vw,1.3rem);line-height:1.5}
+.smart-large{gap:.8rem}
+.smart-large article{background:linear-gradient(150deg,#292943,#1b2937);border:1px solid rgba(179,155,255,.3);border-radius:1.2rem;min-height:clamp(10rem,18vh,14rem);align-content:center}
+.smart-large b{color:var(--accent-secondary)}
+.smart-large strong{font-size:clamp(1.1rem,1.35vw,1.42rem)}
+.smart-large span{font-size:clamp(1rem,1.15vw,1.25rem);color:var(--text-secondary)}
+.case-strip{display:grid;grid-template-columns:1.1fr 1fr 1.2fr 1.2fr;gap:.7rem;align-items:stretch;background:rgba(19,38,48,.9);border:1px solid rgba(255,209,102,.28);border-radius:1rem;padding:.9rem 1rem}
+.case-strip>div:not(.case-title){display:grid;align-content:center;gap:.2rem;padding:.55rem .8rem;border-left:1px solid var(--line)}
+.case-title{align-self:center;color:var(--gold);font-size:1.08rem;font-weight:800}
+.case-strip b{font-size:.94rem;color:var(--accent)}
+.case-strip span{font-size:1rem;line-height:1.4;color:var(--text-secondary)}
+.page-ref{color:#9aadb1;font-size:.88rem}
+.cover-bottom{color:#cedbdd;font-size:clamp(1.05rem,1.3vw,1.4rem)}
+.decor{opacity:.5;filter:saturate(1.3);animation:breathe 8s ease-in-out infinite}
+.controls{background:rgba(13,28,38,.9);border-color:#35525e;box-shadow:0 10px 34px rgba(0,0,0,.35);color:var(--text-primary)}
+.controls button{color:var(--text-primary)}
+.controls button:hover{background:#1b3d43;box-shadow:0 0 20px rgba(98,224,193,.2)}
+#count{color:#d8e5e4}
+.hint{color:#adc0c0}
+.progress{height:5px;box-shadow:0 0 18px rgba(98,224,193,.5)}
+.reveal{opacity:0;transform:translateY(26px) scale(.98);filter:blur(5px);transition:opacity .72s cubic-bezier(.16,1,.3,1),transform .78s cubic-bezier(.16,1,.3,1),filter .72s ease}
+.reveal.visible{opacity:1;transform:none;filter:none}
+.slide{filter:blur(0);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1),visibility .65s,filter .65s ease}
+.slide:not(.is-active){filter:blur(8px)}
+.slide.is-active::after{animation:orbit 28s linear infinite,glow 3.5s ease-in-out infinite alternate}
+.slide.is-active .flow-step .num{animation:pop-in .7s cubic-bezier(.16,1,.3,1) both}
+.slide.is-active .arrow{animation:arrow-pulse 1.8s ease-in-out infinite}
+.card,.topic,.flow-step,.method,.step,.response,.smart-large article{transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.slide.is-active .card:hover,.slide.is-active .topic:hover,.slide.is-active .flow-step:hover,.slide.is-active .method:hover,.slide.is-active .step:hover,.slide.is-active .response:hover{transform:translateY(-7px);border-color:rgba(98,224,193,.65);box-shadow:0 20px 45px rgba(0,0,0,.35),0 0 26px rgba(98,224,193,.1)}
+.slide:first-of-type .inner{justify-content:center;gap:clamp(1rem,2.5vh,2rem)}
+.slide:first-of-type .cover-bottom{margin-top:1rem}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes glow{from{opacity:.08}to{opacity:.18}}
+@keyframes breathe{0%,100%{transform:scale(.96)}50%{transform:scale(1.04)}}
+@keyframes pop-in{0%{transform:scale(.3) rotate(-18deg);opacity:0}75%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes arrow-pulse{0%,100%{opacity:.55;transform:translateX(0)}50%{opacity:1;transform:translateX(5px)}}
+@media(max-width:1100px){.topic-map{grid-template-columns:repeat(3,1fr)}.topic{min-height:13rem}.methods{grid-template-columns:repeat(2,1fr)}.t4{grid-template-columns:repeat(2,1fr)}.case-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.slide{padding:1rem 1rem 4.2rem}.inner{height:100%;min-height:0;max-height:100%;gap:.55rem;justify-content:space-evenly}.grid2,.grid3{grid-template-columns:1fr}.topic-map{grid-template-columns:1fr 1fr}.topic{min-height:8.5rem;padding:.8rem}.topic p{font-size:.9rem}.flow{flex-wrap:wrap}.flow-step{min-width:40%;min-height:8rem}.arrow{display:none}.t4,.methods{grid-template-columns:1fr 1fr}.step-track{grid-template-columns:repeat(2,1fr)}.response-grid.response-four,.response-three{grid-template-columns:1fr}.case-strip{grid-template-columns:1fr 1fr}.case-title{grid-column:1/-1}.case-strip>div:not(.case-title){border-left:0;border-top:1px solid var(--line)}.hint{display:none}.lead{font-size:1.08rem}h2{font-size:clamp(1.65rem,6vw,2.6rem)}h1{font-size:clamp(2.5rem,10vw,4rem)}}
+@media(max-height:700px){.inner{min-height:0;gap:.4rem}.slide{padding:.8rem 2.5rem}.topic{min-height:8.5rem}.flow-step{min-height:8rem}.step,.method{padding:.65rem}.note{padding:.65rem .9rem}.case-strip{padding:.55rem}.smart-large article{min-height:7rem}}
+@media(prefers-reduced-motion:reduce){.slide::after,.decor,.slide.is-active .arrow,.slide.is-active .flow-step .num{animation:none!important}.reveal{opacity:1;transform:none;filter:none}}/* Readability and canvas-fit pass: larger teaching text across every slide */
+:root{--body-size:clamp(1.4rem,1.75vw,1.8rem)}
+.inner{width:min(96vw,1840px);gap:clamp(.8rem,1.45vh,1.35rem)}
+p,.copy{font-size:clamp(1.4rem,1.8vw,1.82rem);line-height:1.48}
+.lead{font-size:clamp(1.55rem,2vw,2rem);line-height:1.45;max-width:76ch}
+.kicker{font-size:clamp(1.08rem,1.2vw,1.28rem)}
+.tag{font-size:clamp(1rem,1.1vw,1.18rem);padding:.52rem 1rem}
+h3{font-size:clamp(1.45rem,1.9vw,1.95rem)}
+.card{padding:clamp(1.5rem,2.2vw,2.35rem)}
+.card p{font-size:clamp(1.4rem,1.85vw,1.9rem);line-height:1.48}
+.card .label{font-size:1.12rem}
+.list{gap:.8rem}
+.list li{font-size:clamp(1.35rem,1.75vw,1.8rem);line-height:1.48;grid-template-columns:2.5rem 1fr;gap:.8rem}
+.list .bullet{width:2.25rem;height:2.25rem;font-size:1rem}
+.flow{gap:clamp(.85rem,1.4vw,1.4rem)}
+.flow-step{min-height:clamp(11rem,20vh,15rem);padding:clamp(1.35rem,2vw,2rem)}
+.flow-step b{font-size:clamp(1.55rem,1.95vw,2rem)}
+.flow-step small{font-size:clamp(1.3rem,1.65vw,1.68rem);line-height:1.45}
+.arrow{font-size:2.4rem}
+.note{font-size:clamp(1.35rem,1.7vw,1.75rem);line-height:1.48;padding:1.2rem 1.5rem}
+.topic{min-height:clamp(15rem,24vh,22rem);padding:clamp(1.3rem,1.8vw,2rem)}
+.topic .topic-no{font-size:1.2rem}
+.topic h3{font-size:clamp(1.45rem,1.85vw,1.9rem)}
+.topic p{font-size:clamp(1.2rem,1.5vw,1.55rem);line-height:1.45}
+.response-grid.response-four{grid-template-rows:repeat(2,minmax(10rem,1fr));align-content:stretch;gap:clamp(1rem,1.5vh,1.4rem)}
+.response-three{grid-template-rows:minmax(12rem,1fr);align-content:stretch;gap:1rem}
+.response{min-height:clamp(10rem,18vh,14rem);padding:clamp(1.35rem,2vw,2rem);gap:1.1rem}
+.response p{font-size:clamp(1.45rem,1.9vw,1.95rem);line-height:1.46}
+.response .rnum{width:2.7rem;height:2.7rem;font-size:1.2rem;border-radius:.75rem}
+.t4 .sub{font-size:clamp(1.35rem,1.7vw,1.75rem)}
+.t4 .card p{font-size:clamp(1.3rem,1.65vw,1.7rem);line-height:1.45}
+.step h3{font-size:clamp(1.3rem,1.65vw,1.68rem)}
+.step p{font-size:clamp(1.2rem,1.52vw,1.55rem);line-height:1.45}
+.step .stepnum{font-size:1.15rem}
+.method h3{font-size:clamp(1.45rem,1.8vw,1.85rem)}
+.method p{font-size:clamp(1.22rem,1.58vw,1.62rem);line-height:1.46}
+.method .pill{font-size:1.05rem;padding:.42rem .85rem}
+.smart-large article{min-height:clamp(12rem,20vh,16rem);padding:1.5rem 1rem}
+.smart-large b{font-size:clamp(3.2rem,5vw,5rem)}
+.smart-large strong{font-size:clamp(1.35rem,1.7vw,1.75rem)}
+.smart-large span{font-size:clamp(1.2rem,1.5vw,1.55rem);line-height:1.4}
+.case-strip{padding:1.2rem 1.3rem;gap:1rem}
+.case-title{font-size:1.3rem}
+.case-strip b{font-size:1.12rem}
+.case-strip span{font-size:clamp(1.12rem,1.35vw,1.4rem);line-height:1.42}
+.small{font-size:clamp(1.08rem,1.22vw,1.25rem);line-height:1.45}
+.page-ref{font-size:1rem}
+@media(max-width:1100px){.topic-map{grid-template-columns:repeat(3,1fr)}.topic{min-height:13rem}}
+@media(max-width:700px){.inner{width:100%;gap:.6rem}.kicker{font-size:.95rem}.tag{font-size:.85rem}p,.copy{font-size:1.1rem}.lead{font-size:1.15rem}h3{font-size:1.2rem}.card{padding:1rem}.card p,.list li,.response p,.step p,.method p,.topic p{font-size:1.08rem}.flow-step{min-height:8rem;padding:.9rem}.flow-step b{font-size:1.2rem}.flow-step small{font-size:1rem}.response-grid.response-four{grid-template-rows:none}.response-three{grid-template-rows:none}.response{min-height:0;padding:.9rem}.topic{min-height:8.5rem}.topic h3{font-size:1.15rem}.topic p{font-size:.92rem}.note{font-size:1.05rem;padding:.75rem .9rem}.step h3,.method h3{font-size:1.15rem}.smart-large article{min-height:7.5rem;padding:.7rem}.smart-large b{font-size:2.5rem}.smart-large strong{font-size:1rem}.smart-large span{font-size:.95rem}.case-strip{padding:.7rem;gap:.4rem}.case-title{font-size:1rem}.case-strip b,.case-strip span{font-size:.9rem}}
+@media(max-height:700px){.inner{gap:.45rem}.response{min-height:8rem;padding:.85rem}.flow-step{min-height:8rem}.topic{min-height:10rem}.smart-large article{min-height:8rem}.note{padding:.75rem 1rem}.card{padding:1rem}}/* Heading wrapping and vertical breathing room */
+.slide{padding-top:clamp(2.4rem,4.8vh,3.6rem);padding-bottom:clamp(2.2rem,4vh,3.2rem)}
+.inner{min-height:0;height:100%;gap:clamp(.9rem,1.35vh,1.25rem)}
+h2{max-width:none;font-size:clamp(2.35rem,3.7vw,4.25rem);line-height:1.16;text-wrap:pretty;flex:none}
+.title-chunk{white-space:nowrap}
+.section-top{flex:none;align-items:center}
+@media(max-width:700px){.slide{padding-top:1.1rem;padding-bottom:4.2rem}h2{font-size:clamp(1.65rem,6vw,2.6rem)}.title-chunk{white-space:normal}}
+@media(max-height:700px){.slide{padding-top:1rem;padding-bottom:1rem}.inner{min-height:0;height:100%}h2{font-size:clamp(1.9rem,3.2vw,2.8rem)}}/* Closing recap layout */
+.recap-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-content:stretch;gap:clamp(.7rem,1vw,1rem);flex:1}
+.recap-card{height:100%;display:flex;flex-direction:column;justify-content:center;gap:.7rem;border-top:5px solid var(--accent);padding:clamp(1rem,1.3vw,1.45rem)}
+.recap-card:nth-child(2){border-top-color:var(--gold)}.recap-card:nth-child(3){border-top-color:var(--accent-secondary)}.recap-card:nth-child(4){border-top-color:var(--coral)}.recap-card:nth-child(5){border-top-color:#65c6ec}
+.recap-card h3{font-size:clamp(1.25rem,1.5vw,1.6rem)}
+.recap-card p{font-size:clamp(1.22rem,1.45vw,1.55rem);line-height:1.43}
+.recap-no{font-weight:900;font-size:clamp(2rem,3vw,3.1rem);line-height:1;color:var(--accent)}
+.recap-no.gold{color:var(--gold)}.recap-no.violet{color:var(--accent-secondary)}.recap-no.coral-no{color:var(--coral)}.recap-no.blue{color:#65c6ec}
+@media(max-width:1100px){.recap-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.recap-card{min-height:12rem}}
+@media(max-width:700px){.recap-grid{grid-template-columns:1fr 1fr;gap:.5rem}.recap-card{min-height:0;padding:.7rem;gap:.35rem}.recap-card p{font-size:.95rem}.recap-card h3{font-size:1.08rem}.recap-no{font-size:1.6rem}}/* Keep every slide content frame inside the padded viewport and center it */
+.inner{width:100%;max-width:1700px;min-width:0;justify-self:center;margin-inline:auto}/* Slide: four conflict-resolution methods use the full content area in a balanced 2×2 grid */
+.method-four-slide .methods{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));align-content:stretch;gap:clamp(.8rem,1.5vh,1.3rem);min-height:0}
+.method-four-slide .method{height:auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.2rem;padding:clamp(1.15rem,2vw,2rem)}
+.method-four-slide .method h3{font-size:clamp(1.45rem,2vw,2.15rem);margin:.5rem 0}
+.method-four-slide .method p{font-size:clamp(1.15rem,1.55vw,1.65rem);line-height:1.48}
+.method-four-slide .note{margin-top:.25rem!important}
+@media(max-width:700px){.method-four-slide .methods{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.55rem}.method-four-slide .method{padding:.8rem}.method-four-slide .method p{font-size:clamp(.95rem,2.5vw,1.12rem)}}/* Make the four conflict-resolution methods the visual focus */
+.method-four-slide .method{position:relative;overflow:hidden;border-top-width:7px}
+.method-four-slide .method .pill{display:inline-flex;align-self:flex-start;width:max-content;max-width:100%;padding:.42rem 1rem;font-size:clamp(1rem,1.25vw,1.25rem);font-weight:800;letter-spacing:.01em}
+.method-four-slide .method h3{font-size:clamp(2rem,2.65vw,3rem);line-height:1.12;font-weight:900;letter-spacing:-.025em;margin:.55rem 0 .65rem;text-shadow:0 4px 18px rgba(0,0,0,.22)}
+.method-four-slide .method:nth-child(1) h3{color:#62e0c1}
+.method-four-slide .method:nth-child(2) h3{color:#ffd166}
+.method-four-slide .method:nth-child(3) h3{color:#b39bff}
+.method-four-slide .method:nth-child(4) h3{color:#ff806b}
+@media(max-width:700px){.method-four-slide .method h3{font-size:clamp(1.45rem,4.5vw,2rem)}.method-four-slide .method .pill{font-size:.95rem;padding:.35rem .7rem}}/* Slide: give the five-step conflict process a large, balanced 3+2 layout */
+.process-five-slide .step-track{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));align-content:stretch;gap:clamp(.85rem,1.4vw,1.35rem);min-height:0}
+.process-five-slide .step-track>.step:nth-child(-n+3){grid-column:span 2}
+.process-five-slide .step-track>.step:nth-child(n+4){grid-column:span 3}
+.process-five-slide .step{position:relative;overflow:hidden;height:auto;min-height:0;padding:clamp(1.25rem,2vw,2rem);gap:.35rem;border-left:6px solid var(--accent);justify-content:center}
+.process-five-slide .step:nth-child(2){border-left-color:var(--gold)}.process-five-slide .step:nth-child(3){border-left-color:var(--accent-secondary)}.process-five-slide .step:nth-child(4){border-left-color:var(--coral)}.process-five-slide .step:nth-child(5){border-left-color:#67c9eb}
+.process-five-slide .step .stepnum{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;min-width:3.3rem;height:3.3rem;padding:.25rem .6rem;border-radius:999px;background:rgba(98,224,193,.16);color:var(--accent);font-size:1.2rem;font-weight:900}
+.process-five-slide .step:nth-child(2) .stepnum{background:rgba(255,209,102,.16);color:var(--gold)}.process-five-slide .step:nth-child(3) .stepnum{background:rgba(179,155,255,.17);color:var(--accent-secondary)}.process-five-slide .step:nth-child(4) .stepnum{background:rgba(255,128,107,.16);color:var(--coral)}.process-five-slide .step:nth-child(5) .stepnum{background:rgba(103,201,235,.16);color:#67c9eb}
+.process-five-slide .step h3{font-size:clamp(1.55rem,2.15vw,2.35rem);line-height:1.2;margin:.45rem 0;color:var(--text-primary)}
+.process-five-slide .step p{font-size:clamp(1.2rem,1.55vw,1.65rem);line-height:1.5}
+.process-five-slide .note{margin-top:.25rem!important}
+@media(max-width:700px){.process-five-slide .step-track{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:.55rem}.process-five-slide .step-track>.step:nth-child(n){grid-column:span 1}.process-five-slide .step{padding:.8rem;border-left-width:4px}.process-five-slide .step .stepnum{min-width:2.4rem;height:2.4rem;font-size:1rem}.process-five-slide .step h3{font-size:clamp(1.1rem,4vw,1.5rem)}.process-five-slide .step p{font-size:clamp(.92rem,2.8vw,1.08rem);line-height:1.4}}/* Improve text-to-card balance on the five-step process slide */
+.process-five-slide .step{padding:clamp(1.45rem,2.2vw,2.25rem);gap:.5rem}
+.process-five-slide .step .stepnum{min-width:3.8rem;height:3.8rem;font-size:1.4rem}
+.process-five-slide .step h3{font-size:clamp(1.8rem,2.7vw,2.85rem);line-height:1.18;margin:.55rem 0}
+.process-five-slide .step p{font-size:clamp(1.4rem,1.82vw,1.9rem);line-height:1.48}
+@media(max-width:700px){.process-five-slide .step{padding:.8rem;gap:.25rem}.process-five-slide .step .stepnum{min-width:2.4rem;height:2.4rem;font-size:1rem}.process-five-slide .step h3{font-size:clamp(1.1rem,4vw,1.5rem)}.process-five-slide .step p{font-size:clamp(.92rem,2.8vw,1.08rem);line-height:1.4}}</style>
+</head>
+<body>
+<div id="deck" aria-label="เว็บสไลด์บทเรียน">
+<div class="progress" id="progress"></div>
+
+<section class="slide is-active" aria-label="สไลด์ 1">
+  <div class="inner">
+    <div class="kicker reveal">บทเรียน • การทำงานในอาชีพ</div>
+    <h1 class="reveal">การกำหนดแนวทาง<br><em style="font-style:normal;color:var(--accent)">จัดการความเสี่ยง</em><br>และความขัดแย้งในงานอาชีพ</h1>
+    <p class="lead reveal" style="margin-top:1rem">มองความเสี่ยงให้ทัน ทำงานกับความเห็นต่างให้เป็น</p>
+    <div class="cover-bottom reveal"><span></span>สรุปบทเรียน 5 หัวข้อ • พร้อมตัวอย่างนำไปใช้</div>
+    <div class="decor"></div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 2">
+  <div class="inner">
+    <div class="kicker reveal">แผนที่บทเรียน</div>
+    <h2 class="reveal">วันนี้เราจะเรียนรู้ 5 เรื่อง</h2>
+    <p class="reveal">สองเรื่องแรกเน้นรู้จักและจัดการความเสี่ยง ต่อด้วยการนำไปใช้ในองค์การ แล้วจึงเรียนรู้การทำงานกับความขัดแย้งในทีม</p>
+    <div class="topic-map">
+      <article class="topic reveal"><span class="topic-no">01</span><h3>ความหมาย</h3><p>ความหมายของการบริหารความเสี่ยง</p></article>
+      <article class="topic reveal"><span class="topic-no">02</span><h3>องค์ประกอบ</h3><p>องค์ประกอบของการบริหารความเสี่ยง</p></article>
+      <article class="topic reveal"><span class="topic-no">03</span><h3>ในองค์การ</h3><p>การบริหารความเสี่ยงในองค์การ</p></article>
+      <article class="topic reveal"><span class="topic-no">04</span><h3>สร้างทีม</h3><p>แนวคิดความขัดแย้งกับการสร้างทีม</p></article>
+      <article class="topic reveal"><span class="topic-no">05</span><h3>แก้ความขัดแย้ง</h3><p>แนวคิดเกี่ยวกับวิธีการแก้ไขความขัดแย้ง</p></article>
+    </div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 16</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 3">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 1 • ความหมายของการบริหารความเสี่ยง</div><span class="tag reveal">หน้า 16–17</span></div>
+    <h2 class="reveal">ความเสี่ยงคือสิ่งไม่แน่นอนที่อาจกระทบเป้าหมาย</h2>
+    <div class="grid2">
+      <article class="card green reveal"><div class="label">ความเสี่ยง</div><p>เหตุการณ์หรือความไม่แน่นอนที่อาจทำให้งานเสียหาย ล่าช้า ล้มเหลว หรือเสียโอกาสในการบรรลุเป้าหมาย</p></article>
+      <article class="card purple reveal"><div class="label">การบริหารความเสี่ยง</div><p>ระบุ วิเคราะห์ ประเมิน จัดการ ติดตาม และสื่อสารความเสี่ยง เพื่อลดผลเสียและเพิ่มโอกาสให้งานสำเร็จ</p></article>
+    </div>
+    <div class="rule"></div>
+    <div class="flow">
+      <div class="flow-step reveal"><span class="num">1</span><b>ระบุ</b><small>อะไรอาจผิดพลาด?</small></div><div class="arrow reveal">→</div>
+      <div class="flow-step reveal"><span class="num" style="background:var(--gold)">2</span><b>ประเมิน</b><small>โอกาสและผลกระทบมากแค่ไหน?</small></div><div class="arrow reveal">→</div>
+      <div class="flow-step reveal"><span class="num" style="background:var(--accent-secondary)">3</span><b>รับมือ</b><small>ป้องกัน ลด หรือเตรียมแผน</small></div>
+    </div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 16–17</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 4">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 1 • มองความเสี่ยงให้รอบด้าน</div><span class="tag reveal">ตัวอย่างในองค์การ</span></div>
+    <h2 class="reveal">ความเสี่ยงไม่ได้มีแค่เรื่องอุบัติเหตุ</h2>
+    <p class="lead reveal">องค์การควรพิจารณาความเสี่ยงที่อาจกระทบเป้าหมายทั้ง 4 ด้าน</p>
+    <div class="grid2" style="margin-top:1rem">
+      <article class="card reveal"><div class="section-top"><span class="num">01</span><span class="pill">ทิศทาง</span></div><h3 style="margin-top:.6rem">กลยุทธ์</h3><p>แผนหรือทิศทางไม่เหมาะกับสถานการณ์ ทำให้องค์การไปไม่ถึงเป้าหมาย</p></article>
+      <article class="card reveal"><div class="section-top"><span class="num" style="background:var(--gold)">02</span><span class="pill" style="background:#f8f0dc;color:#866515">การทำงาน</span></div><h3 style="margin-top:.6rem">การดำเนินงาน</h3><p>ขั้นตอนผิดพลาด งานล่าช้า หรือมีทรัพยากรไม่พอ</p></article>
+      <article class="card reveal"><div class="section-top"><span class="num" style="background:var(--coral)">03</span><span class="pill" style="background:var(--pale-coral);color:#a2513c">ข้อมูล</span></div><h3 style="margin-top:.6rem">การรายงาน</h3><p>ข้อมูลหรือรายงาน โดยเฉพาะข้อมูลทางการเงิน ไม่ถูกต้องหรือไม่ครบถ้วน</p></article>
+      <article class="card reveal"><div class="section-top"><span class="num" style="background:var(--accent-secondary)">04</span><span class="pill" style="background:var(--pale-purple);color:var(--accent-secondary)">ข้อกำหนด</span></div><h3 style="margin-top:.6rem">กฎหมายและระเบียบ</h3><p>ไม่ปฏิบัติตามกฎหมาย ระเบียบ หรือคำสั่งที่เกี่ยวข้อง</p></article>
+    </div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 17–18</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 5">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 2 • องค์ประกอบของการบริหารความเสี่ยง</div><span class="tag reveal">คิดเป็น 3 ขั้น</span></div>
+    <h2 class="reveal">รู้ภัย <span class="title-chunk">→ เข้าใจผลกระทบ</span> <span class="title-chunk">→ เลือกมาตรการ</span></h2>
+    <div class="flow" style="margin-top:.8rem">
+      <div class="flow-step reveal"><span class="num">1</span><b>ระบุความเสี่ยง</b><small>องค์การกำลังเผชิญภัยอะไร และเกิดในลักษณะใด?</small></div><div class="arrow reveal">→</div>
+      <div class="flow-step reveal"><span class="num" style="background:var(--gold)">2</span><b>ประเมินผลกระทบ</b><small>ภัยมีโอกาสเกิดเท่าไร และกระทบเป้าหมายมากแค่ไหน?</small></div><div class="arrow reveal">→</div>
+      <div class="flow-step reveal"><span class="num" style="background:var(--accent-secondary)">3</span><b>ตอบสนองความเสี่ยง</b><small>เรียงลำดับความสำคัญ แล้วเลือกวิธีรับมือให้เหมาะสม</small></div>
+    </div>
+    <div class="note reveal"><strong>จำง่าย:</strong> ถ้ายังไม่รู้ว่าเสี่ยงอะไร ก็ยากที่จะเลือกวิธีป้องกันที่ตรงจุด</div>
+    <div class="case-strip reveal"><div class="case-title">ตัวอย่าง: วางแผนจัดงานกลางแจ้ง</div><div><b>ภัยที่พบ</b><span>ฝนตกในวันงาน</span></div><div><b>ประเมินผล</b><span>โอกาสเกิดมีได้ และอาจทำให้งานหยุด</span></div><div><b>มาตรการ</b><span>จองพื้นที่ในร่มเป็นแผนสำรอง</span></div></div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 17</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="มาตรการจัดการความเสี่ยง: ป้องกันและลดโอกาสเกิด">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 2 • มาตรการจัดการภัย (1/2)</div><span class="tag reveal">ก่อนเกิดเหตุ</span></div>
+    <h2 class="reveal">เริ่มจากลดโอกาสที่ภัยจะเกิดและสัมผัสเรา</h2>
+    <p class="lead reveal">เลือกมาตรการให้ตรงกับลักษณะของภัย ตั้งแต่กำจัดต้นเหตุ ไปจนถึงป้องกันไม่ให้คนเผชิญอันตรายโดยตรง</p>
+    <div class="response-grid response-four">
+      <article class="response reveal"><span class="rnum">1</span><p><strong>กำจัดหรือลดความรุนแรง</strong><br>จัดการต้นเหตุหรือทำให้ภัยที่ต้องเผชิญรุนแรงน้อยลง</p></article>
+      <article class="response reveal"><span class="rnum">2</span><p><strong>ป้องกันไม่ให้สัมผัสภัย</strong><br>จัดพื้นที่หรือขั้นตอนงานให้ผู้รับภัยไม่ต้องเผชิญภัยโดยตรง</p></article>
+      <article class="response reveal"><span class="rnum">3</span><p><strong>ป้องกันภัยที่มีโอกาสเกิดสูง</strong><br>เช่น คาดเข็มขัดนิรภัย หรือยึดของไม่ให้ตกหล่น</p></article>
+      <article class="response reveal"><span class="rnum">4</span><p><strong>ป้องกันไอระเหยหรือสารพิษ</strong><br>เช่น สวมหน้ากากและใช้อุปกรณ์ป้องกันให้เหมาะกับงาน</p></article>
+    </div>
+    <div class="note reveal"><strong>จำง่าย:</strong> ก่อนเริ่มงาน ให้ถามว่า “ลดต้นเหตุได้ไหม และป้องกันคนจากภัยได้อย่างไร?”</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 17</div>
+  </div>
+</section>
+<section class="slide" aria-label="มาตรการจัดการความเสี่ยง: รับมือและฟื้นฟู">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 2 • มาตรการจัดการภัย (2/2)</div><span class="tag reveal">เมื่อเกิดเหตุและหลังเหตุ</span></div>
+    <h2 class="reveal">เตรียมลดความเสียหาย และกลับมาทำงานได้</h2>
+    <p class="lead reveal">แม้ป้องกันแล้วก็ยังเกิดเหตุได้ จึงควรเตรียมแผนรับมือฉุกเฉินและฟื้นฟูไว้ล่วงหน้า</p>
+    <div class="response-three">
+      <article class="response reveal"><span class="rnum">5</span><p><strong>ลดความรุนแรงของเหตุฉุกเฉิน</strong><br>เช่น ผนังกั้นไฟ ระบบสปริงเกลอร์ และทางหนีไฟที่ชัดเจน</p></article>
+      <article class="response reveal"><span class="rnum">6</span><p><strong>กู้ภัยและช่วยเหลือ</strong><br>ช่วยผู้ได้รับผลกระทบและลดความสูญเสียโดยตรงเมื่อเกิดเหตุ</p></article>
+      <article class="response reveal"><span class="rnum">7</span><p><strong>ฟื้นฟูสภาพ</strong><br>ซ่อมแซมและจัดระบบให้กลับมาดำเนินงานได้ ลดความเสียหายต่อเนื่อง</p></article>
+    </div>
+    <div class="note reveal"><strong>ภาพรวม:</strong> ป้องกันก่อนเกิดเหตุ → บรรเทาและช่วยเหลือเมื่อเกิดเหตุ → ฟื้นฟูหลังเหตุ</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 17</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 6">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 3 • การบริหารความเสี่ยงในองค์การ</div><span class="tag reveal">ทำให้เป็นระบบ</span></div>
+    <h2 class="reveal">ระบบที่ดีต้องอยู่ในงานประจำของทุกฝ่าย</h2>
+    <div class="grid2">
+      <article class="card green reveal"><h3>องค์การควรทำอย่างไร?</h3><ul class="list" style="margin-top:.65rem">
+        <li><span class="bullet">✓</span><span>วางแผนและกำหนดผู้รับผิดชอบให้ชัดเจน</span></li>
+        <li><span class="bullet">✓</span><span>ประเมินซ้ำ ไม่ละเลยปัญหาที่พบ และค้นหาความเสี่ยงใหม่</span></li>
+        <li><span class="bullet">✓</span><span>ใช้เกณฑ์ประเมินที่ครอบคลุม และรายงานต่อผู้เกี่ยวข้อง</span></li>
+        <li><span class="bullet">✓</span><span>เชื่อมโยงการจัดการความเสี่ยงกับการวางแผนและการทำงาน</span></li>
+      </ul></article>
+      <article class="card purple reveal"><h3>ปัจจัยช่วยให้สำเร็จ</h3><ul class="list" style="margin-top:.65rem">
+        <li><span class="bullet" style="background:#ded4ed;color:#63498b">1</span><span>เทคโนโลยีและข้อมูลที่เก็บ ส่งต่อ และตรวจสอบได้</span></li>
+        <li><span class="bullet" style="background:#ded4ed;color:#63498b">2</span><span>การฝึกอบรมให้บุคลากรเข้าใจหน้าที่</span></li>
+        <li><span class="bullet" style="background:#ded4ed;color:#63498b">3</span><span>ผู้บริหารสนับสนุนอย่างจริงจัง</span></li>
+        <li><span class="bullet" style="background:#ded4ed;color:#63498b">4</span><span>บุคลากรทุกระดับร่วมมือกัน</span></li>
+      </ul></article>
+    </div>
+    <div class="note reveal" style="margin-top:.9rem"><strong>ตัวอย่าง:</strong> ทีมงานมีตารางความเสี่ยง ระบุคนรับผิดชอบ และนัดทบทวนความคืบหน้าเป็นระยะ</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 17–18</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 7">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 3 • กลยุทธ์จัดการความเสี่ยง</div><span class="tag reveal">4T</span></div>
+    <h2 class="reveal">เลือกวิธีรับมือให้ตรงกับระดับความเสี่ยง</h2>
+    <div class="t4">
+      <article class="card green reveal"><div class="big-number">T</div><div class="sub">TAKE • ยอมรับ</div><p>ความเสี่ยงอยู่ในระดับรับได้ จึงยอมรับพร้อมติดตามและเตรียมแผนไว้</p></article>
+      <article class="card reveal"><div class="big-number" style="color:var(--gold)">T</div><div class="sub">TREAT • ลด/ควบคุม</div><p>เพิ่มมาตรการป้องกันหรือปรับงานเพื่อลดโอกาสและผลกระทบ</p></article>
+      <article class="card purple reveal"><div class="big-number" style="color:var(--accent-secondary)">T</div><div class="sub">TERMINATE • หลีกเลี่ยง</div><p>หยุดหรือเปลี่ยนกิจกรรมที่เสี่ยงเกินระดับที่ยอมรับได้</p></article>
+      <article class="card coral reveal"><div class="big-number" style="color:var(--coral)">T</div><div class="sub">TRANSFER • กระจาย/โอน</div><p>แบ่งความเสี่ยง เช่น ทำประกันหรือจ้างผู้เชี่ยวชาญบางส่วน</p></article>
+    </div>
+    <div class="note reveal" style="margin-top:1rem">ตัวอย่างฝนตก: <strong>Treat</strong> = เตรียมเต็นท์ • <strong>Terminate</strong> = ย้ายหรือยกเลิกกิจกรรมกลางแจ้ง</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 18–19</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="กระบวนการบริหารความเสี่ยง 5 ขั้นตอน">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 3 • กระบวนการบริหารความเสี่ยง</div><span class="tag reveal">ทำซ้ำและทบทวน</span></div>
+    <h2 class="reveal">บริหารความเสี่ยงเป็นวงจร 5 ขั้น</h2>
+    <p class="lead reveal">เริ่มจากเป้าหมายของงาน แล้วหาสิ่งที่อาจขัดขวาง จัดการ และทบทวนผลเป็นระยะ</p>
+    <div class="step-track">
+      <article class="step reveal"><span class="stepnum">ขั้น 1</span><h3>กำหนดเป้าหมาย</h3><p>ระบุสิ่งที่ต้องการให้สำเร็จและขอบเขตงาน</p></article>
+      <article class="step reveal"><span class="stepnum">ขั้น 2</span><h3>ระบุความเสี่ยง</h3><p>ค้นหาสถานการณ์ที่อาจขัดขวางเป้าหมาย</p></article>
+      <article class="step reveal"><span class="stepnum">ขั้น 3</span><h3>ประเมินความเสี่ยง</h3><p>พิจารณาโอกาสเกิดและผลกระทบ แล้วจัดลำดับ</p></article>
+      <article class="step reveal"><span class="stepnum">ขั้น 4</span><h3>เลือกมาตรการ</h3><p>กำหนดวิธีรับมือ ผู้รับผิดชอบ และทรัพยากร</p></article>
+      <article class="step reveal"><span class="stepnum">ขั้น 5</span><h3>ติดตามและทบทวน</h3><p>สื่อสาร ตรวจผล และปรับแผนเมื่อสถานการณ์เปลี่ยน</p></article>
+    </div>
+    <div class="note reveal"><strong>หัวใจของวงจร:</strong> ต้องติดตามและประเมินซ้ำ เพราะความเสี่ยงและสถานการณ์เปลี่ยนได้</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 19</div>
+  </div>
+</section>
+<section class="slide" aria-label="การตั้งเป้าหมายตามหลัก SMART">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 3 • ตั้งเป้าหมายให้ติดตามได้</div><span class="tag reveal">SMART</span></div>
+    <h2 class="reveal">เป้าหมายชัด ช่วยให้ทีมรู้ว่าต้องทำอะไร</h2>
+    <p class="lead reveal">SMART เป็นหลักช่วยตรวจว่าเป้าหมายเข้าใจตรงกัน วัดความคืบหน้าได้ และทำได้จริงตามเวลาที่กำหนด</p>
+    <div class="smart smart-large">
+      <article class="reveal"><b>S</b><strong>Specific</strong><span>ชัดเจนว่า<br>ต้องทำอะไร</span></article>
+      <article class="reveal"><b>M</b><strong>Measurable</strong><span>ระบุวิธี<br>วัดผลได้</span></article>
+      <article class="reveal"><b>A</b><strong>Achievable</strong><span>เป็นไปได้<br>ตามทรัพยากร</span></article>
+      <article class="reveal"><b>R</b><strong>Realistic</strong><span>สมเหตุผล<br>และสอดคล้องกับงาน</span></article>
+      <article class="reveal"><b>T</b><strong>Timely</strong><span>กำหนดเวลา<br>ที่ต้องทำสำเร็จ</span></article>
+    </div>
+    <div class="card green reveal"><div class="label">ตัวอย่างเป้าหมาย</div><p>“จัดงานนำเสนอให้เสร็จก่อนวันศุกร์ โดยใช้งบไม่เกิน 5,000 บาท” ระบุงาน ผลลัพธ์ และเวลาชัดกว่าคำว่า “จัดงานให้ดี”</p></div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 19</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 8">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 4 • แนวคิดความขัดแย้งกับการสร้างทีม</div><span class="tag reveal">หน้า 19–20</span></div>
+    <h2 class="reveal">เห็นต่างได้ โดยไม่ทำให้ทีมแตกแยก</h2>
+    <p class="lead reveal">ความขัดแย้งเกิดเมื่อคนที่มีเป้าหมาย ความต้องการ ความคิด หรือวิธีทำงานต่างกัน ต้องมาทำงานร่วมกัน</p>
+    <div class="grid2" style="margin-top:1rem">
+      <article class="card green reveal"><h3>มุมมองที่ช่วยให้คุยกันต่อ</h3><p style="margin-top:.5rem">ทุกฝ่ายอาจมองเห็นข้อเท็จจริงคนละด้าน ความเห็นของคนหนึ่งไม่จำเป็นต้องเป็นความจริงทั้งหมด และอีกฝ่ายก็มีเหตุผลของตน</p></article>
+      <article class="card purple reveal"><h3>เป้าหมายของทีม</h3><p style="margin-top:.5rem">ทำความเข้าใจสาเหตุ รับฟังมุมมองของกันและกัน แล้วหาทางออกที่ช่วยให้งานเดินหน้าและความสัมพันธ์ยังดี</p></article>
+    </div>
+    <div class="note reveal" style="margin-top:1rem"><strong>หลักจำ:</strong> โฟกัสที่ปัญหาและเป้าหมายร่วม แยกเรื่องงานออกจากการตัดสินตัวบุคคล</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 19–20</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 9">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 4 • รู้สาเหตุเพื่อป้องกันปัญหา</div><span class="tag reveal">หน้า 19–23</span></div>
+    <h2 class="reveal">ความขัดแย้งมักเริ่มจากความไม่ตรงกัน</h2>
+    <div class="grid2">
+      <ul class="list reveal">
+        <li><span class="bullet">1</span><span>ผลประโยชน์หรือความต้องการของคนและองค์การไม่ตรงกัน</span></li>
+        <li><span class="bullet">2</span><span>ยึดความคิดของตนเองมากเกินไป หรือมองอีกฝ่ายเป็นคู่ต่อสู้</span></li>
+        <li><span class="bullet">3</span><span>แยกเรื่องส่วนตัวกับเรื่องส่วนรวมไม่ออก</span></li>
+        <li><span class="bullet">4</span><span>ไม่เข้าใจวิธีคิด คุณค่า ความเชื่อ หรือบุคลิกที่แตกต่าง</span></li>
+      </ul>
+      <article class="card coral reveal"><h3>ปัจจัยที่ทำให้ปัญหารุนแรงขึ้น</h3><p>สื่อสารไม่ชัด ขาดแผนและทิศทาง หน้าที่ไม่แน่นอน บรรยากาศกดดัน ความเครียด และความเหนื่อยล้า</p><div class="rule"></div><p class="small"><strong>สัญญาณ:</strong> เงียบใส่กัน โต้เถียงเรื่องเดิม งานไม่คืบ หรือเริ่มกล่าวโทษกัน</p></article>
+    </div>
+    <div class="note reveal" style="margin-top:.9rem"><strong>เช็กก่อนเริ่มงาน:</strong> ทุกคนเข้าใจเป้าหมาย หน้าที่ วิธีทำงาน และกำหนดเวลาเหมือนกันหรือยัง?</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 19–23</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สไลด์ 10">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 4 • สร้างทีมที่คุยกันได้</div><span class="tag reveal">วิธีรับมือ</span></div>
+    <h2 class="reveal">หยุดกล่าวโทษ แล้วค่อย ๆ เปิดพื้นที่คุย</h2>
+    <div class="flow">
+      <div class="flow-step reveal"><span class="num">1</span><b>หยุดอารมณ์</b><small>พักก่อนถ้ากำลังโกรธหรือเครียด</small></div><div class="arrow">→</div>
+      <div class="flow-step reveal"><span class="num" style="background:var(--gold)">2</span><b>ฟังให้ครบ</b><small>ให้ทุกฝ่ายบอกเหตุผลและความต้องการ</small></div><div class="arrow">→</div>
+      <div class="flow-step reveal"><span class="num" style="background:var(--accent-secondary)">3</span><b>กลับสู่เป้าหมาย</b><small>ใช้ข้อเท็จจริงและความสำเร็จของทีมเป็นหลัก</small></div>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <article class="card green reveal"><h3>ประโยคที่ช่วยเริ่มคุย</h3><p>“เรามาลองดูว่าแต่ละคนกังวลเรื่องอะไร และมีทางเลือกไหนที่ทำให้งานสำเร็จได้บ้าง”</p></article>
+      <article class="card purple reveal"><h3>สิ่งที่ควรตกลงร่วมกัน</h3><p>เป้าหมาย วิธีทำงาน ผู้รับผิดชอบ เวลา และวิธีแจ้งเมื่อพบปัญหา</p></article>
+    </div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 20–23</div>
+  </div>
+</section>
+
+<section class="slide method-four-slide" aria-label="สไลด์ 11">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 5 • แนวคิดเกี่ยวกับวิธีการแก้ไขความขัดแย้ง</div><span class="tag reveal">4 วิธีพื้นฐานตามบทเรียน</span></div>
+    <h2 class="reveal">เลือกวิธีให้เหมาะกับเรื่องและความสัมพันธ์</h2>
+    <div class="methods">
+      <article class="method reveal"><span class="pill">พักปัญหา</span><h3>หลีกเลี่ยง</h3><p>เหมาะเมื่อเรื่องยังไม่สำคัญหรือทุกคนต้องการเวลาสงบใจ แต่ปัญหาอาจยังค้างอยู่</p></article>
+      <article class="method reveal"><span class="pill" style="background:#f8f0dc;color:#866515">รักษาน้ำใจ</span><h3>ปรองดอง</h3><p>ยอมตามอีกฝ่ายเพื่อรักษาความสัมพันธ์ แต่อาจทำให้ผู้ยอมรู้สึกเสียประโยชน์</p></article>
+      <article class="method reveal"><span class="pill" style="background:var(--pale-purple);color:var(--accent-secondary)">หาจุดกลาง</span><h3>ประนีประนอม</h3><p>ทั้งสองฝ่ายลดความต้องการบางส่วน เพื่อได้ข้อตกลงร่วมกัน</p></article>
+      <article class="method reveal"><span class="pill" style="background:var(--pale-coral);color:#a2513c">ยืนยันจุดยืน</span><h3>แข่งขัน</h3><p>ยืนยันเป้าหมายของตน อาจเหมาะกับกรณีเร่งด่วน แต่ใช้บ่อยอาจกระทบความสัมพันธ์</p></article>
+    </div>
+    <div class="note reveal" style="margin-top:.9rem">เลือกตามความสำคัญของเรื่อง เวลา และความสัมพันธ์ในทีม หนังสือบทนี้สรุปพื้นฐานไว้ 4 วิธี</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 20–21</div>
+  </div>
+</section>
+
+<section class="slide process-five-slide" aria-label="สไลด์ 12">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">หัวข้อ 5 • กระบวนการแก้ไขความขัดแย้ง</div><span class="tag reveal">หน้า 21–22</span></div>
+    <h2 class="reveal">จากความเห็นต่าง ไปสู่ข้อตกลงที่ทำได้จริง</h2>
+    <div class="step-track">
+      <article class="step reveal"><span class="stepnum">01</span><h3>สังเกต</h3><p>ยอมรับว่ามีความขัดแย้ง</p></article>
+      <article class="step reveal"><span class="stepnum">02</span><h3>เปิดการสื่อสาร</h3><p>แจ้งผู้เกี่ยวข้องและให้ทุกฝ่ายพูด</p></article>
+      <article class="step reveal"><span class="stepnum">03</span><h3>ทำความเข้าใจ</h3><p>รวบรวมข้อเท็จจริงและความต้องการ</p></article>
+      <article class="step reveal"><span class="stepnum">04</span><h3>หาทางออก</h3><p>สร้างทางเลือกที่เป็นประโยชน์ต่อทีม</p></article>
+      <article class="step reveal"><span class="stepnum">05</span><h3>ตกลงและติดตาม</h3><p>ระบุหน้าที่ ตรวจผล และทบทวน</p></article>
+    </div>
+    <div class="note reveal" style="margin-top:1.15rem"><strong>ผลลัพธ์ที่ต้องการ:</strong> ทุกฝ่ายเข้าใจข้อตกลง ยอมรับแนวทาง และรู้ว่าต้องทำอะไรต่อ ไม่ใช่แค่หาว่าใครชนะ</div>
+    <div class="page-ref">อ้างอิงหนังสือเรียน หน้า 21–22</div>
+  </div>
+</section>
+
+<section class="slide" aria-label="สรุปท้ายบท">
+  <div class="inner">
+    <div class="section-top"><div class="kicker reveal">สรุปท้ายบท • 5 เรื่องสำคัญ</div><span class="tag reveal">ทบทวนก่อนจบ</span></div>
+    <h2 class="reveal">รู้ความเสี่ยงให้ทัน จัดการความเห็นต่างให้เป็น</h2>
+    <p class="lead reveal">จำใจความของแต่ละหัวข้อ แล้วนำไปใช้กับงานและการทำงานเป็นทีม</p>
+    <div class="recap-grid">
+      <article class="card recap-card green reveal"><span class="recap-no">01</span><h3>ความหมาย</h3><p>ความเสี่ยงคือสิ่งไม่แน่นอนที่อาจกระทบเป้าหมาย การบริหารคือรู้ให้ทัน ประเมิน และเตรียมรับมือ</p></article>
+      <article class="card recap-card reveal"><span class="recap-no gold">02</span><h3>องค์ประกอบ</h3><p>ระบุภัย ประเมินโอกาสและผลกระทบ แล้วเลือกมาตรการป้องกัน รับมือ หรือฟื้นฟูให้เหมาะ</p></article>
+      <article class="card recap-card purple reveal"><span class="recap-no violet">03</span><h3>ในองค์การ</h3><p>กำหนดเป้าหมาย SMART → ระบุและประเมินภัย → ใช้ 4T รับมือ → ติดตามทบทวนร่วมกัน</p></article>
+      <article class="card recap-card coral reveal"><span class="recap-no coral-no">04</span><h3>สร้างทีม</h3><p>ความเห็นต่างเกิดจากความต้องการและวิธีคิดที่ต่างกัน รับฟังกันและโฟกัสที่ปัญหากับเป้าหมายร่วม</p></article>
+      <article class="card recap-card reveal"><span class="recap-no blue">05</span><h3>แก้ความขัดแย้ง</h3><p>เลือกหลีกเลี่ยง ปรองดอง ประนีประนอม หรือแข่งขัน เปิดคุยให้เข้าใจตรงกัน แล้วตกลงและติดตามผล</p></article>
+    </div>
+    <div class="note reveal"><strong>จำเป็นลำดับ:</strong> ตั้งเป้าหมาย → มองความเสี่ยง → รับฟังความเห็นต่าง → ตกลงวิธีที่ทำได้จริง</div>
+    <div class="page-ref">สรุปจากหนังสือเรียน หน้า 16–23</div>
+  </div>
+</section>
+</div>
+
+<nav class="controls" aria-label="ควบคุมการนำเสนอ">
+  <button id="prev" aria-label="สไลด์ก่อนหน้า" title="ก่อนหน้า (←)">←</button>
+  <span id="count" aria-live="polite">01 / 17</span>
+  <button id="next" aria-label="สไลด์ถัดไป" title="ถัดไป (→)">→</button>
+  <button id="full" aria-label="เต็มจอ" title="เต็มจอ (F)">⛶</button>
+</nav>
+<script>
+(function(){
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const progress=document.getElementById('progress');
+  const count=document.getElementById('count');
+  let current=0,busy=false,touchStartX=0,touchStartY=0;
+  function reveal(index){
+    slides[index].querySelectorAll('.reveal').forEach((el,i)=>{
+      el.classList.remove('visible');
+      window.setTimeout(()=>el.classList.add('visible'),Math.min(i*75,650));
+    });
+  }
+  function go(index){
+    const next=Math.max(0,Math.min(slides.length-1,index));
+    if(next===current&&slides[next].classList.contains('is-active'))return;
+    slides[current].classList.remove('is-active');
+    current=next;
+    slides[current].classList.add('is-active');
+    count.textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+    progress.style.width=((current+1)/slides.length*100)+'%';
+    reveal(current);
+    history.replaceState(null,'','#slide-'+(current+1));
+  }
+  document.getElementById('prev').addEventListener('click',()=>go(current-1));
+  document.getElementById('next').addEventListener('click',()=>go(current+1));
+  document.getElementById('full').addEventListener('click',()=>{
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(current+1)}
+    else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(current-1)}
+    else if(e.key==='Home'){e.preventDefault();go(0)}
+    else if(e.key==='End'){e.preventDefault();go(slides.length-1)}
+    else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+  });
+  document.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].clientX;touchStartY=e.changedTouches[0].clientY},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-touchStartX,dy=e.changedTouches[0].clientY-touchStartY;
+    if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy))go(current+(dx<0?1:-1));
+  },{passive:true});
+  const hash=location.hash.match(/slide-(\d+)/);
+  if(hash)current=Math.max(0,Math.min(slides.length-1,Number(hash[1])-1));
+  slides.forEach((s,i)=>{s.setAttribute('aria-label','สไลด์ '+String(i+1).padStart(2,'0'));s.classList.toggle('is-active',i===current)});
+  count.textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  progress.style.width=((current+1)/slides.length*100)+'%';
+  reveal(current);
+})();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
