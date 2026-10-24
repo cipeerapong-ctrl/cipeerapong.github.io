@@ -1,9 +1,9 @@
-const CACHE_NAME = "class-planner-shell-v4";
+const CACHE_NAME = "class-planner-shell-v5";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./styles.css",
-  "./app.js",
+  "./styles.css?v=5",
+  "./app.js?v=5",
   "./schedule-data.js",
   "./holiday-data.js",
   "./homework-store.js",
