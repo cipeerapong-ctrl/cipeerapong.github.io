@@ -32,6 +32,7 @@ const elements = {
   doneCount: $("#done-count"),
   subjectFilter: $("#subject-filter"),
   courseSelect: $("#homework-course"),
+  dueSuggestions: $("#due-suggestions"),
   dialog: $("#homework-dialog"),
   form: $("#homework-form"),
   titleInput: $("#homework-title"),
@@ -53,6 +54,7 @@ const state = {
   subjectFilter: "all",
   activeView: "schedule",
   editingId: null,
+  dueSuggestionDates: [],
   toastTimer: null,
 };
 
@@ -213,9 +215,11 @@ function renderSpotlight(classes) {
     return;
   }
 
-  const room = focusClass.room ? `ห้อง ${escapeHTML(focusClass.room)}` : "กิจกรรมประจำวัน";
+  const course = focusClass.courseCode ? courseFor(focusClass.courseCode) : null;
+  const details = [focusClass.room ? `ห้อง ${escapeHTML(focusClass.room)}` : "กิจกรรมประจำวัน"];
+  if (course?.teacher) details.push(`ครู${escapeHTML(course.teacher)}`);
   const code = focusClass.courseCode ? `${escapeHTML(focusClass.courseCode)} · ` : "";
-  elements.spotlight.innerHTML = `<span class="spotlight-icon" aria-hidden="true">${focusClass.kind === "routine" ? "☀" : "◷"}</span><div class="spotlight-copy"><p class="spotlight-label">${label}</p><p class="spotlight-title">${code}${escapeHTML(focusClass.title)}</p><p class="spotlight-meta">${escapeHTML(focusClass.start)}–${escapeHTML(focusClass.end)} · ${room}</p></div>`;
+  elements.spotlight.innerHTML = `<span class="spotlight-icon" aria-hidden="true">${focusClass.kind === "routine" ? "☀" : "◷"}</span><div class="spotlight-copy"><p class="spotlight-label">${label}</p><p class="spotlight-title">${code}${escapeHTML(focusClass.title)}</p><p class="spotlight-meta">${escapeHTML(focusClass.start)}–${escapeHTML(focusClass.end)} · ${details.join(" · ")}</p></div>`;
 }
 
 function renderClassCard(item, index, classes) {
@@ -226,7 +230,10 @@ function renderClassCard(item, index, classes) {
   const kindClass = item.kind === "routine" ? " is-routine" : "";
   const cardClass = `class-card${isCurrent ? " is-current" : ""}${isNext ? " is-next" : ""}${kindClass}`;
   const code = item.courseCode ? `<p class="class-code">${escapeHTML(item.courseCode)}</p>` : `<p class="class-code">กิจกรรมประจำวัน</p>`;
-  const room = item.room ? `<p class="class-room">⌖ ${escapeHTML(item.room)}</p>` : "";
+  const course = item.courseCode ? courseFor(item.courseCode) : null;
+  const details = [item.room ? `⌖ ${escapeHTML(item.room)}` : ""];
+  if (course?.teacher) details.push(`ครู${escapeHTML(course.teacher)}`);
+  const room = details.filter(Boolean).length ? `<p class="class-room">${details.filter(Boolean).join(" · ")}</p>` : "";
   let stateLabel = "";
   if (isCurrent) stateLabel = `<span class="class-state">กำลังเรียน</span>`;
   else if (isNext) stateLabel = `<span class="class-state is-next-state">ถัดไป</span>`;
@@ -264,6 +271,45 @@ function renderSchedule() {
 
 function courseFor(code) {
   return SCHEDULE.courses.find((course) => course.courseCode === code);
+}
+
+function nextCourseDates(courseCode, count = 3) {
+  const classDays = new Set(Object.entries(SCHEDULE.weekdays)
+    .filter(([, classes]) => classes.some((item) => item.kind === "class" && item.courseCode === courseCode))
+    .map(([weekday]) => Number(weekday)));
+  const dates = [];
+  for (let offset = 1; offset <= 42 && dates.length < count; offset += 1) {
+    const date = new Date(Date.UTC(state.today.year, state.today.month - 1, state.today.day + offset));
+    const weekday = date.getUTCDay() || 7;
+    if (classDays.has(weekday)) dates.push(date.toISOString().slice(0, 10));
+  }
+  return dates;
+}
+
+function renderDueSuggestions({ autoSelect = false } = {}) {
+  const courseCode = elements.courseSelect.value;
+  const currentDate = elements.dueInput.value;
+  const canReplaceDate = !currentDate || state.dueSuggestionDates.includes(currentDate);
+  const dates = courseCode ? nextCourseDates(courseCode) : [];
+  state.dueSuggestionDates = dates;
+  if (autoSelect && canReplaceDate) elements.dueInput.value = dates[0] || "";
+
+  if (!courseCode) {
+    elements.dueSuggestions.innerHTML = `<span class="due-suggestion-hint">เลือกวิชาเพื่อดูวันเรียนครั้งถัดไป</span>`;
+    return;
+  }
+  if (!dates.length) {
+    elements.dueSuggestions.innerHTML = `<span class="due-suggestion-hint">ไม่พบวันเรียนของวิชานี้ในตาราง</span>`;
+    return;
+  }
+
+  const buttons = dates.map((date, index) => {
+    const selected = elements.dueInput.value === date;
+    const label = index === 0 ? "ครั้งถัดไป" : `ครั้งที่ ${index + 1}`;
+    const formattedDate = formatThaiDate(date, { weekday: "short", day: "numeric", month: "short" });
+    return `<button class="due-suggestion${selected ? " is-selected" : ""}" type="button" data-suggested-due="${date}" aria-pressed="${selected}"><span>${label}</span><strong>${escapeHTML(formattedDate)}</strong></button>`;
+  }).join("");
+  elements.dueSuggestions.innerHTML = `<span class="due-suggestion-label">วันเรียนที่แนะนำ</span><div class="due-suggestion-list">${buttons}</div>`;
 }
 
 function taskDueDistance(task, today) {
@@ -399,6 +445,8 @@ function openHomeworkDialog({ task = null, courseCode = "" } = {}) {
   elements.titleInput.value = task?.title || "";
   elements.dueInput.value = task?.dueDate || "";
   elements.notesInput.value = task?.notes || "";
+  state.dueSuggestionDates = [];
+  renderDueSuggestions({ autoSelect: !task });
   elements.dialog.showModal();
   requestAnimationFrame(() => elements.titleInput.focus());
 }
@@ -548,6 +596,14 @@ function bindEvents() {
   });
   $$('[data-open-homework]').forEach((button) => button.addEventListener("click", () => setView("homework")));
   $("#add-homework").addEventListener("click", () => openHomeworkDialog());
+  elements.courseSelect.addEventListener("change", () => renderDueSuggestions({ autoSelect: true }));
+  elements.dueInput.addEventListener("change", () => renderDueSuggestions());
+  elements.dueSuggestions.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-suggested-due]");
+    if (!button) return;
+    elements.dueInput.value = button.dataset.suggestedDue;
+    renderDueSuggestions();
+  });
   elements.classList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-quick-add]");
     if (button) openHomeworkDialog({ courseCode: button.dataset.quickAdd });

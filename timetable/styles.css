@@ -114,8 +114,8 @@ h1 { margin-bottom: 7px; font-size: clamp(29px, 4vw, 42px); line-height: 1.18; l
 .notice-copy p { margin: 3px 0 0; color: inherit; opacity: .8; font-size: 12px; line-height: 1.5; }
 .notice-copy a { color: inherit; font-weight: 700; }
 
-.view-tabs { display: flex; gap: 5px; width: fit-content; margin: 0 0 19px; padding: 5px; border-radius: 14px; background: #e9ece7; }
-.view-tab { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 16px; border: 0; border-radius: 10px; background: transparent; color: #687585; font-weight: 700; cursor: pointer; }
+.view-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; width: 100%; margin: 0 0 19px; padding: 5px; border-radius: 14px; background: #e9ece7; }
+.view-tab { min-height: 48px; display: inline-flex; justify-content: center; align-items: center; gap: 8px; padding: 0 16px; border: 0; border-radius: 10px; background: transparent; color: #687585; font-weight: 700; cursor: pointer; }
 .view-tab.is-active { color: var(--navy); background: var(--surface); box-shadow: 0 3px 9px rgba(32,54,85,.07); }
 .tab-icon { font-size: 16px; }
 .tab-count { min-width: 20px; padding: 1px 6px; border-radius: 9px; background: var(--orange-pale); color: #9e6125; font-size: 11px; text-align: center; }
@@ -240,6 +240,14 @@ h1 { margin-bottom: 7px; font-size: clamp(29px, 4vw, 42px); line-height: 1.18; l
 .optional-label { margin-left: 5px; color: #8a95a4; font-size: 10px; font-weight: 500; }
 .homework-dialog input, .homework-dialog select { width: 100%; min-height: 46px; padding: 0 12px; border: 1px solid #dfe5df; border-radius: 11px; background: white; color: var(--ink); }
 .homework-dialog input::placeholder { color: #a0a8b0; }
+.due-suggestions { display: grid; gap: 7px; margin: 0 0 2px; }
+.due-suggestion-label, .due-suggestion-hint { color: var(--muted); font-size: 11px; }
+.due-suggestion-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.due-suggestion { min-height: 44px; display: grid; gap: 1px; padding: 5px 10px; border: 1px solid #dfe8e1; border-radius: 10px; background: #f8faf7; color: #5f6e7b; text-align: left; cursor: pointer; }
+.due-suggestion span { font-size: 10px; }
+.due-suggestion strong { color: var(--ink); font-size: 12px; font-weight: 750; }
+.due-suggestion:hover { border-color: #a6ccc0; background: #eff7f3; }
+.due-suggestion.is-selected { border-color: var(--teal); background: var(--teal-pale); box-shadow: 0 0 0 1px rgba(22,143,131,.08); }
 .form-row { display: grid; grid-template-columns: 1fr 1.3fr; gap: 11px; }
 .form-row > div { display: grid; gap: 7px; }
 .form-error { margin: 2px 0 0; color: #a73543; font-size: 12px; }
