@@ -112,7 +112,7 @@
           </div>
 
           <div class="homework-tools">
-            <label class="filter-label" for="subject-filter">วิชา</label>
+            <label class="filter-label" for="subject-filter-picker">วิชา</label>
             <select id="subject-filter" class="filter-select">
               <option value="all">ทุกวิชา</option>
             </select>
@@ -155,15 +155,15 @@
           </div>
           <button class="icon-button" type="button" data-close-dialog aria-label="ปิดหน้าต่าง">×</button>
         </div>
-        <label for="homework-course">วิชา <span class="required-mark">*</span></label>
-        <select id="homework-course" name="courseCode" required></select>
+        <label for="homework-course-picker">วิชา <span class="required-mark">*</span></label>
+        <select id="homework-course" name="courseCode" tabindex="-1" aria-hidden="true"></select>
         <label for="homework-title">ชื่องาน <span class="required-mark">*</span></label>
         <input id="homework-title" name="title" type="text" maxlength="120" placeholder="เช่น สรุปบทที่ 3" required />
         <div class="form-row">
           <div>
             <label for="homework-due">กำหนดส่ง <span class="optional-label">ไม่บังคับ</span></label>
             <input id="homework-due" name="dueDate" type="date" />
-        <div id="due-suggestions" class="due-suggestions" aria-label="วันกำหนดส่งที่แนะนำ" aria-live="polite"></div>
+            <div id="due-suggestions" class="due-suggestions" aria-label="วันกำหนดส่งที่แนะนำ" aria-live="polite"></div>
           </div>
           <div>
             <label for="homework-notes">รายละเอียดเพิ่มเติม <span class="optional-label">ไม่บังคับ</span></label>
@@ -182,3 +182,4 @@
     <script type="module" src="./app.js"></script>
   </body>
 </html>
+
