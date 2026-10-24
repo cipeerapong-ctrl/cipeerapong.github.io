@@ -1,4 +1,4 @@
-const CACHE_NAME = "class-planner-shell-v2";
+const CACHE_NAME = "class-planner-shell-v3";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -52,3 +52,4 @@ self.addEventListener("fetch", (event) => {
     })),
   );
 });
+
