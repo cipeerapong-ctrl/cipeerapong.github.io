@@ -420,6 +420,129 @@ function renderSubjectOptions() {
   const options = SCHEDULE.courses.map((course) => `<option value="${escapeHTML(course.courseCode)}">${escapeHTML(course.courseCode)} · ${escapeHTML(course.title)}</option>`).join("");
   elements.courseSelect.innerHTML = `<option value="">เลือกวิชา</option>${options}`;
   elements.subjectFilter.innerHTML = `<option value="all">ทุกวิชา</option>${options}`;
+  enhanceSelect(elements.courseSelect, { placeholder: "เลือกวิชา", searchable: true });
+  enhanceSelect(elements.subjectFilter, { placeholder: "ทุกวิชา", searchable: true, filter: true });
+}
+
+function enhanceSelect(select, { placeholder, searchable = false, filter = false }) {
+  const wrapper = document.createElement("div");
+  wrapper.className = `custom-select${filter ? " custom-select--filter" : ""}`;
+  select.before(wrapper);
+  wrapper.append(select);
+  select.classList.add("select-source");
+  select.removeAttribute("required");
+  select.tabIndex = -1;
+  select.setAttribute("aria-hidden", "true");
+
+  const trigger = document.createElement("button");
+  trigger.type = "button";
+  trigger.id = `${select.id}-picker`;
+  trigger.className = "custom-select-picker is-placeholder";
+  trigger.setAttribute("aria-haspopup", "listbox");
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-controls", `${select.id}-listbox`);
+  trigger.innerHTML = `<span class="custom-select-value"></span><span class="custom-select-chevron" aria-hidden="true">⌄</span>`;
+
+  const popover = document.createElement("div");
+  popover.className = "custom-select-popover";
+  popover.hidden = true;
+  const search = document.createElement("input");
+  search.className = "custom-select-search";
+  search.type = "search";
+  search.autocomplete = "off";
+  search.placeholder = "ค้นหาชื่อหรือรหัสวิชา";
+  search.setAttribute("aria-label", "ค้นหาชื่อหรือรหัสวิชา");
+  const list = document.createElement("div");
+  list.className = "custom-select-list";
+  list.id = `${select.id}-listbox`;
+  list.setAttribute("role", "listbox");
+  list.setAttribute("aria-label", placeholder);
+  if (searchable) popover.append(search);
+  popover.append(list);
+  wrapper.append(trigger, popover);
+
+  const renderSelected = () => {
+    const selected = select.selectedOptions[0];
+    const value = selected?.textContent || placeholder;
+    trigger.querySelector(".custom-select-value").textContent = value;
+    trigger.classList.toggle("is-placeholder", !select.value);
+    trigger.setAttribute("aria-label", value);
+    renderOptions(search.value);
+  };
+  const renderOptions = (query = "") => {
+    const normalizedQuery = query.trim().toLocaleLowerCase("th-TH");
+    const matches = [...select.options].filter((option) => {
+      const label = option.textContent.toLocaleLowerCase("th-TH");
+      return !normalizedQuery || label.includes(normalizedQuery);
+    });
+    list.innerHTML = matches.length
+      ? matches.map((option) => `<button class="custom-select-option" type="button" role="option" data-select-value="${escapeHTML(option.value)}" aria-selected="${option.value === select.value}"><span class="custom-select-option-label">${escapeHTML(option.textContent)}</span></button>`).join("")
+      : `<div class="custom-select-empty" role="status">ไม่พบวิชาที่ค้นหา</div>`;
+  };
+  const close = ({ restoreFocus = false } = {}) => {
+    popover.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    wrapper.dataset.open = "false";
+    search.value = "";
+    renderOptions();
+    if (restoreFocus) trigger.focus();
+  };
+  const open = () => {
+    popover.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    wrapper.dataset.open = "true";
+    search.value = "";
+    renderOptions();
+  };
+
+  trigger.addEventListener("click", () => (popover.hidden ? open() : close()));
+  trigger.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      open();
+      if (searchable) search.focus();
+      else list.querySelector("[role=option]")?.focus();
+    }
+  });
+  search.addEventListener("input", () => renderOptions(search.value));
+  search.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      list.querySelector("[role=option]")?.focus();
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close({ restoreFocus: true });
+    }
+  });
+  list.addEventListener("keydown", (event) => {
+    const option = event.target.closest("[role=option]");
+    if (!option) return;
+    const options = [...list.querySelectorAll("[role=option]")];
+    const index = options.indexOf(option);
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      options[(index + (event.key === "ArrowDown" ? 1 : -1) + options.length) % options.length]?.focus();
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close({ restoreFocus: true });
+    }
+  });
+  list.addEventListener("click", (event) => {
+    const option = event.target.closest("[data-select-value]");
+    if (!option) return;
+    select.value = option.dataset.selectValue;
+    close();
+    renderSelected();
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    trigger.focus();
+  });
+  select.addEventListener("change", renderSelected);
+  document.addEventListener("pointerdown", (event) => {
+    if (!wrapper.contains(event.target) && !popover.hidden) close();
+  });
+  renderSelected();
 }
 
 function setView(view) {
@@ -446,7 +569,7 @@ function openHomeworkDialog({ task = null, courseCode = "" } = {}) {
   elements.dueInput.value = task?.dueDate || "";
   elements.notesInput.value = task?.notes || "";
   state.dueSuggestionDates = [];
-  renderDueSuggestions({ autoSelect: !task });
+  elements.courseSelect.dispatchEvent(new Event("change", { bubbles: true }));
   elements.dialog.showModal();
   requestAnimationFrame(() => elements.titleInput.focus());
 }
@@ -658,3 +781,4 @@ async function initialize() {
 }
 
 initialize();
+
