@@ -276,7 +276,7 @@ h1 { margin-bottom: 7px; font-size: clamp(29px, 4vw, 42px); line-height: 1.18; l
 .due-suggestion:hover { border-color: #a6ccc0; background: #eff7f3; }
 .due-suggestion.is-selected { border-color: var(--teal); background: var(--teal-pale); box-shadow: 0 0 0 1px rgba(22,143,131,.08); }
 .form-row { display: grid; grid-template-columns: 1fr 1.3fr; gap: 11px; }
-.form-row > div { display: grid; gap: 7px; }
+.form-row > div { display: grid; align-content: start; gap: 7px; }
 .form-error { margin: 2px 0 0; color: #a73543; font-size: 12px; }
 .dialog-actions { justify-content: flex-end; gap: 8px; margin-top: 13px; }
 .toast { position: fixed; z-index: 20; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); max-width: calc(100% - 32px); padding: 12px 17px; border-radius: 12px; color: white; background: var(--navy); box-shadow: 0 8px 25px rgba(20,36,57,.25); font-size: 13px; opacity: 0; pointer-events: none; transform: translate(-50%, 15px); transition: opacity .2s ease, transform .2s ease; }
