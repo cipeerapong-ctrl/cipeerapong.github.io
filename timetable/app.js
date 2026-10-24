@@ -493,6 +493,16 @@ function enhanceSelect(select, { placeholder, searchable = false, filter = false
     wrapper.dataset.open = "true";
     search.value = "";
     renderOptions();
+    const triggerRect = trigger.getBoundingClientRect();
+    const boundary = select.closest("dialog")?.getBoundingClientRect();
+    const boundaryTop = boundary?.top ?? 0;
+    const boundaryBottom = boundary?.bottom ?? window.innerHeight;
+    const spaceBelow = boundaryBottom - triggerRect.bottom - 16;
+    const spaceAbove = triggerRect.top - boundaryTop - 16;
+    const openAbove = spaceBelow < Math.min(popover.offsetHeight, 285) && spaceAbove > spaceBelow;
+    const availableSpace = Math.max(120, openAbove ? spaceAbove : spaceBelow);
+    wrapper.dataset.placement = openAbove ? "above" : "below";
+    wrapper.style.setProperty("--picker-list-max-height", `${Math.max(72, Math.min(216, availableSpace - 72))}px`);
   };
 
   trigger.addEventListener("click", () => (popover.hidden ? open() : close()));
