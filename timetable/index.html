@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f6f2" />
+    <meta name="description" content="ตารางเรียนและรายการการบ้าน สำหรับเปิดดูง่ายบน iPad" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>ตารางเรียนของฉัน</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <a class="brand" href="#schedule-view" aria-label="กลับหน้าตารางเรียน">
+          <span class="brand-mark" aria-hidden="true">ต</span>
+          <span class="brand-name">ตารางของฉัน</span>
+        </a>
+        <div class="header-meta">
+          <span class="term-label"><span class="status-dot"></span> ภาคเรียน 2/2569</span>
+          <span id="network-status" class="network-status" role="status">กำลังเชื่อมต่อ</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="welcome-row" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">CLASS PLANNER <span>•</span> เรียนให้เป็นจังหวะ</p>
+            <h1 id="page-title">ตารางเรียนวันนี้</h1>
+            <p id="today-date" class="today-date"></p>
+          </div>
+          <div class="welcome-decoration" aria-hidden="true">
+            <span class="sun-shape"></span>
+            <span class="sun-leaf leaf-one"></span>
+            <span class="sun-leaf leaf-two"></span>
+          </div>
+        </section>
+
+        <nav id="day-selector" class="day-selector" aria-label="เลือกวันในสัปดาห์"></nav>
+
+        <section id="holiday-notices" class="notice-stack" aria-label="วันสำคัญใกล้ถึง" aria-live="polite"></section>
+
+        <nav class="view-tabs" aria-label="หน้าหลัก">
+          <button class="view-tab is-active" type="button" data-view="schedule" aria-pressed="true">
+            <span class="tab-icon" aria-hidden="true">▦</span> ตารางเรียน
+          </button>
+          <button class="view-tab" type="button" data-view="homework" aria-pressed="false">
+            <span class="tab-icon" aria-hidden="true">✓</span> การบ้าน
+            <span id="homework-tab-count" class="tab-count">0</span>
+          </button>
+        </nav>
+
+        <section id="schedule-view" class="view-panel" aria-labelledby="schedule-heading">
+          <div class="schedule-layout">
+            <div class="schedule-main">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow eyebrow-green">MY DAY</p>
+                  <h2 id="schedule-heading">ตารางเรียน</h2>
+                </div>
+                <span id="class-count" class="subtle-count"></span>
+              </div>
+              <section id="class-spotlight" class="class-spotlight"></section>
+              <div id="class-list" class="class-list"></div>
+            </div>
+
+            <aside class="schedule-aside">
+              <section class="side-card homework-preview-card">
+                <div class="side-card-heading">
+                  <div>
+                    <p class="eyebrow eyebrow-orange">DON'T FORGET</p>
+                    <h2>การบ้านใกล้ส่ง</h2>
+                  </div>
+                  <span class="side-card-mark" aria-hidden="true">✳</span>
+                </div>
+                <div id="homework-preview" class="homework-preview"></div>
+                <button class="text-button" type="button" data-open-homework>
+                  ดูการบ้านทั้งหมด <span aria-hidden="true">→</span>
+                </button>
+              </section>
+
+              <section class="side-card install-card">
+                <span class="install-icon" aria-hidden="true">⌂</span>
+                <div>
+                  <h2>วางไว้บนหน้าจอ iPad</h2>
+                  <p>เปิดใน Safari แตะ “แชร์” แล้วเลือก “เพิ่มไปยังหน้าจอโฮม” เพื่อเปิดได้เหมือนแอพ</p>
+                </div>
+              </section>
+              <p class="storage-note">ข้อมูลการบ้านเก็บไว้ในอุปกรณ์นี้ สำรองหรือย้ายเครื่องได้จากหน้า “การบ้าน”</p>
+            </aside>
+          </div>
+        </section>
+
+        <section id="homework-view" class="view-panel" aria-labelledby="homework-heading" hidden>
+          <div class="homework-header">
+            <div>
+              <p class="eyebrow eyebrow-orange">HOMEWORK DESK</p>
+              <h2 id="homework-heading">การบ้านของฉัน</h2>
+              <p class="homework-intro">จดไว้ก่อน แล้วค่อยทำทีละอย่าง งานจะได้ไม่หล่นหาย</p>
+            </div>
+            <button id="add-homework" class="primary-button" type="button">
+              <span aria-hidden="true">＋</span> เพิ่มการบ้าน
+            </button>
+          </div>
+
+          <div class="homework-stats" aria-label="สรุปการบ้าน">
+            <article class="stat-card stat-overdue"><span>เลยกำหนด</span><strong id="overdue-count">0</strong></article>
+            <article class="stat-card stat-soon"><span>ครบกำหนดใน 7 วัน</span><strong id="soon-count">0</strong></article>
+            <article class="stat-card stat-done"><span>ทำเสร็จแล้ว</span><strong id="done-count">0</strong></article>
+          </div>
+
+          <div class="homework-tools">
+            <label class="filter-label" for="subject-filter">วิชา</label>
+            <select id="subject-filter" class="filter-select">
+              <option value="all">ทุกวิชา</option>
+            </select>
+            <div class="status-filter" role="group" aria-label="กรองสถานะการบ้าน">
+              <button type="button" class="filter-chip is-active" data-status-filter="pending">งานค้าง</button>
+              <button type="button" class="filter-chip" data-status-filter="completed">เสร็จแล้ว</button>
+              <button type="button" class="filter-chip" data-status-filter="all">ทั้งหมด</button>
+            </div>
+          </div>
+
+          <div id="homework-list" class="homework-groups"></div>
+
+          <section class="backup-panel" aria-labelledby="backup-heading">
+            <div>
+              <p class="eyebrow eyebrow-green">YOUR DATA</p>
+              <h3 id="backup-heading">สำรองการบ้าน</h3>
+              <p>ไฟล์สำรองช่วยย้ายรายการไปยังเบราว์เซอร์หรืออุปกรณ์อื่นได้</p>
+            </div>
+            <div class="backup-actions">
+              <button id="export-homework" class="secondary-button" type="button">↓ ส่งออกไฟล์สำรอง</button>
+              <button id="import-homework" class="secondary-button" type="button">↑ นำเข้าไฟล์สำรอง</button>
+              <input id="backup-file" type="file" accept="application/json,.json" hidden />
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span>จัดเวลาให้ดี แล้วค่อย ๆ ไปให้ถึง</span>
+        <span>ตารางเรียนภาคเรียน 2/2569</span>
+      </footer>
+    </div>
+
+    <dialog id="homework-dialog" class="homework-dialog" aria-labelledby="dialog-title">
+      <form id="homework-form" method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow eyebrow-orange">QUICK NOTE</p>
+            <h2 id="dialog-title">เพิ่มการบ้าน</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="ปิดหน้าต่าง">×</button>
+        </div>
+        <label for="homework-course">วิชา <span class="required-mark">*</span></label>
+        <select id="homework-course" name="courseCode" required></select>
+        <label for="homework-title">ชื่องาน <span class="required-mark">*</span></label>
+        <input id="homework-title" name="title" type="text" maxlength="120" placeholder="เช่น สรุปบทที่ 3" required />
+        <div class="form-row">
+          <div>
+            <label for="homework-due">กำหนดส่ง <span class="optional-label">ไม่บังคับ</span></label>
+            <input id="homework-due" name="dueDate" type="date" />
+          </div>
+          <div>
+            <label for="homework-notes">รายละเอียดเพิ่มเติม <span class="optional-label">ไม่บังคับ</span></label>
+            <input id="homework-notes" name="notes" type="text" maxlength="240" placeholder="เช่น ทำข้อ 1–5" />
+          </div>
+        </div>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button class="secondary-button" type="button" data-close-dialog>ยกเลิก</button>
+          <button id="save-homework" class="primary-button" type="submit">บันทึกงาน</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

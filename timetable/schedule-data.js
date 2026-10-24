@@ -1,0 +1,52 @@
+export const SCHEDULE = {
+  weekdays: {
+    1: [
+      { start: "07:50", end: "08:30", kind: "routine", courseCode: null, title: "กิจกรรมหน้าเสาธง", room: "" },
+      { start: "08:30", end: "10:30", kind: "class", courseCode: "30000-1603", title: "ลีลาศเพื่อพัฒนาสุขภาพและบุคลิกภาพ", room: "สนาม 1" },
+      { start: "10:30", end: "12:30", kind: "class", courseCode: "30000-1206", title: "ภาษาอังกฤษสำหรับเทคโนโลยีธุรกิจดิจิทัล", room: "343" },
+      { start: "13:30", end: "17:30", kind: "class", courseCode: "31910-2029", title: "โครงงานด้านเทคโนโลยีธุรกิจดิจิทัล", room: "Com.3" },
+    ],
+    2: [
+      { start: "07:50", end: "08:30", kind: "routine", courseCode: null, title: "กิจกรรมหน้าเสาธง", room: "" },
+      { start: "08:30", end: "12:30", kind: "class", courseCode: "31910-2004", title: "หลักการคิดเชิงออกแบบและนวัตกรรมธุรกิจดิจิทัล", room: "Com.1" },
+      { start: "13:30", end: "15:30", kind: "class", courseCode: "30000-1202", title: "การเขียนและการนำเสนอโครงงานภาษาอังกฤษ", room: "342" },
+      { start: "15:30", end: "17:30", kind: "class", courseCode: "30001-1002", title: "องค์การและการบริหารงานคุณภาพ", room: "121B" },
+    ],
+    3: [
+      { start: "07:50", end: "08:30", kind: "routine", courseCode: null, title: "กิจกรรมหน้าเสาธง", room: "" },
+      { start: "08:30", end: "10:30", kind: "class", courseCode: "30000-2002", title: "กิจกรรมองค์การวิชาชีพที่ 1", room: "Com.3" },
+      { start: "11:30", end: "15:30", kind: "class", courseCode: "31910-2002", title: "ระบบจัดการฐานข้อมูล", room: "Com.4" },
+      { start: "15:30", end: "17:30", kind: "class", courseCode: "31910-1003", title: "การวิเคราะห์ข้อมูล", room: "Com.4" },
+      { start: "17:30", end: "18:30", kind: "class", courseCode: "31910-1001", title: "กฎหมายในงานอาชีพธุรกิจดิจิทัลและพาณิชย์อิเล็กทรอนิกส์", room: "Com.5" },
+    ],
+    4: [
+      { start: "07:50", end: "08:30", kind: "routine", courseCode: null, title: "กิจกรรมหน้าเสาธง", room: "" },
+      { start: "08:30", end: "12:30", kind: "class", courseCode: "31910-2012", title: "อินเทอร์เน็ตเพื่อสรรพสิ่ง", room: "Com.4" },
+      { start: "13:30", end: "17:30", kind: "class", courseCode: "31910-2008", title: "การประยุกต์ AI สำหรับงานธุรกิจ", room: "Com.3" },
+    ],
+    5: [
+      { start: "07:50", end: "08:30", kind: "routine", courseCode: null, title: "กิจกรรมหน้าเสาธง", room: "" },
+      { start: "08:30", end: "11:30", kind: "class", courseCode: "30000-1403", title: "สถิติการทดลองและการวางแผน", room: "334" },
+      { start: "11:30", end: "12:30", kind: "class", courseCode: "30000-1503", title: "หลักปรัชญาของเศรษฐกิจพอเพียงเพื่อการดำเนินชีวิต", room: "331" },
+      { start: "13:30", end: "15:30", kind: "class", courseCode: "31910-1003", title: "การวิเคราะห์ข้อมูล", room: "Com.4" },
+      { start: "15:30", end: "17:30", kind: "class", courseCode: "30000-1605", title: "การจัดการกีฬาและการออกกำลังกายเพื่ออาชีพ", room: "สนาม 1" },
+    ],
+  },
+  courses: [
+    { courseCode: "30000-1202", title: "การเขียนและการนำเสนอโครงงานภาษาอังกฤษ" },
+    { courseCode: "30000-1206", title: "ภาษาอังกฤษสำหรับเทคโนโลยีธุรกิจดิจิทัล" },
+    { courseCode: "30000-1403", title: "สถิติการทดลองและการวางแผน" },
+    { courseCode: "30000-1503", title: "หลักปรัชญาของเศรษฐกิจพอเพียงเพื่อการดำเนินชีวิต" },
+    { courseCode: "30000-1603", title: "ลีลาศเพื่อพัฒนาสุขภาพและบุคลิกภาพ" },
+    { courseCode: "30000-1605", title: "การจัดการกีฬาและการออกกำลังกายเพื่ออาชีพ" },
+    { courseCode: "30000-2002", title: "กิจกรรมองค์การวิชาชีพที่ 1" },
+    { courseCode: "30001-1002", title: "องค์การและการบริหารงานคุณภาพ" },
+    { courseCode: "31910-1001", title: "กฎหมายในงานอาชีพธุรกิจดิจิทัลและพาณิชย์อิเล็กทรอนิกส์" },
+    { courseCode: "31910-1003", title: "การวิเคราะห์ข้อมูล" },
+    { courseCode: "31910-2002", title: "ระบบจัดการฐานข้อมูล" },
+    { courseCode: "31910-2004", title: "หลักการคิดเชิงออกแบบและนวัตกรรมธุรกิจดิจิทัล" },
+    { courseCode: "31910-2008", title: "การประยุกต์ AI สำหรับงานธุรกิจ" },
+    { courseCode: "31910-2012", title: "อินเทอร์เน็ตเพื่อสรรพสิ่ง" },
+    { courseCode: "31910-2029", title: "โครงงานด้านเทคโนโลยีธุรกิจดิจิทัล" },
+  ],
+};
